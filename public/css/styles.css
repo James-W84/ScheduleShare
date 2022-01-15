@@ -1,0 +1,160 @@
+body {
+    margin: 0;
+    text-align: center;
+}
+
+h1 {
+    font-family: 'Raleway', sans-serif;
+    font-size: 3rem;
+}
+
+h2 {
+    font-family: 'Cabin', sans-serif;
+    font-size: 2rem;
+}
+
+h3 {
+    font-family: "Kanit", sans-serif;
+    font-size: 1.5rem;
+}
+
+p {
+    font-family: 'Open Sans', sans-serif;
+}
+
+a {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Responsivity */
+
+.flex-4 { display: inline-block;width: 33%;}
+.flex-6 { display: inline-block;width: 45%;}
+
+@media (max-width: 768px) {
+    h1 {font-size: 2.5rem;}
+    .flex-4 {display: block; width: 100%;}
+    .flex-6 {display: block; width: 100%;}
+}
+
+/* Landing Page */
+.container {
+    background-color: #6998AB;
+    max-width: 100%;
+    padding: 7.5%;
+}
+
+.home-menubar {
+    align-items: flex-end;
+    background-color: #1A374D;
+    border-bottom-left-radius: 10px;
+    border-top-left-radius: 10px;
+    display: flex;
+    height: 60px;
+    justify-content: space-evenly;
+    margin-bottom: 40px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 500px;
+}
+
+.menu-item {
+    color: white;
+    font-family: "Kanit", sans-serif;
+    padding: 20px 0;
+}
+
+.home-menubar .fa-bars {
+    color: white;
+    display: none;
+    font-size: 1.5rem;
+    padding: 10px;
+}
+
+.logo {
+    aspect-ratio: initial;
+    position: absolute;
+}
+
+.large-logo-home {
+    height: 70px;
+    left: 0;
+    top: 0;
+}
+
+.small-logo-home {
+    left: 0;
+    top: 0;
+    height: 50px;
+    padding: 3px 10px;
+    display: none;
+}
+
+#mockup-img {
+    max-width: 80%;
+}
+
+.features-list {
+    background-color: #B1D0E0;
+}
+
+.feature p {
+    padding: 0 40px;
+}
+
+.features-list .fas {
+    color: #1A374D;
+    font-size: 8rem;
+}
+
+.call-to-action {
+    margin-bottom: 80px;
+}
+
+.button {
+    background-color: #1A374D;
+    border-radius: 10px;
+    color: white;
+    font-family: "Kanit", sans-serif;
+    font-size: 1.5rem;
+    margin: 1%;
+    padding: 10px 30px;
+    text-decoration: none;
+}
+
+.pop-up-menu {
+    background-color: #1A374D;
+    border-bottom-left-radius: 10px;
+    border-top-left-radius: 10px;
+    color: white;
+    display: none;
+    font-size: 1.5rem;
+    padding: 9px;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    top: 0;
+}
+
+.pop-up-item {
+    display: block;
+    font-family: "Kanit", sans-serif;
+    padding: 3px 0;
+}
+
+@media screen and (max-width: 600px) {
+    .large-logo-home, .home-menubar .menu-item {display: none;}
+    .home-menubar { height: unset; width: unset;}
+    .home-menubar .fa-bars, .small-logo-home {display: inline-block;}
+}
+
+/* Login Page */
+.full-page {
+    background-color: #6998AB;
+}

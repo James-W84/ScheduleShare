@@ -1,0 +1,60 @@
+<%- include('partials/header') %>
+<body>
+    <div class="home-menubar">
+        <i class="fas fa-bars"></i>
+        <a class="menu-item">About</a>
+        <a class="menu-item">Contact Us</a>
+        <a class="menu-item" href="/login">Login/Register</a>
+    </div>
+    <div class="pop-up-menu">
+        <i class="fas fa-bars"></i>
+        <a class="pop-up-item">About</a>
+        <a class="pop-up-item">Contact Us</a>
+        <a class="pop-up-item" href="/login">Login</a>
+    </div>
+    <img src="/images/logo.jpeg" alt="ScheduleShare Logo" class="large-logo-home logo">
+    <img src="/images/logo-small.jpeg" alt="ScheduleShare Logo" class="small-logo-home logo">
+    <div class="container header-section">
+        <div class="flex-6" id="landing-intro">
+            <h1>Welcome to ScheduleShare!</h1>
+            <h2>Share your class schedule with friends and peers in a fun and convenient manner.</h2>
+        </div>
+        <div class="flex-6">
+            <img src="/images/mockup.png" alt="Mockup of site" id="mockup-img">
+        </div>
+    </div>
+    <div class="container features-list">
+        <div class="feature flex-4">
+            <i class="fas fa-calendar-alt"></i>
+            <h3>Visualize your Schedule</h3>
+            <p>Customize the display of your schedule with custom tags, colors, and more!</p>
+        </div>
+        <div class="feature flex-4">
+            <i class="fas fa-user-friends"></i>
+            <h3>Share with Friends</h3>
+            <p>Share your schedule with friends and be able to see their schedules, too!</p>
+        </div>
+        <div class="feature flex-4">
+            <i class="fas fa-users"></i>
+            <h3>Share with Groups</h3>
+            <p>Share schedules in groups and coordinate hangouts, work periods, and more!</p>
+        </div>
+    </div>
+    <div class="container">
+        <h1 class="call-to-action">Get started now!</h2>
+            <a class="button" href="/login">Login</a>
+            <a class="button" href="/register">Register</a>
+    </div>
+
+    <script>
+        document.querySelector(".home-menubar .fa-bars").addEventListener("click", function () {
+            document.querySelector(".home-menubar .fa-bars").style.display = "none";
+            document.querySelector(".pop-up-menu").style.display = "block";
+        })
+        document.querySelector(".pop-up-menu .fa-bars").addEventListener("click", function () {
+            document.querySelector(".home-menubar .fa-bars").style.display = "inline-block";
+            document.querySelector(".pop-up-menu").style.display = "none";
+        })
+    </script>
+
+    <%- include('partials/footer') %>
