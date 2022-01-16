@@ -7,6 +7,7 @@ const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
 const findOrCreate = require("mongoose-findorcreate");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const { redirect } = require("express/lib/response");
 
 const app = express();
 app.use(express.static("public"));
@@ -38,23 +39,23 @@ const userSchema = new mongoose.Schema({
   googleId: String,
   friends: Array,
   groups: Array,
-  classes: Array
+  classes: Array,
 });
 
-const classSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  startTime: { type: Number, required: true },
-  endTime: { type: Number, required: true },
-  days: { type: String, required: true },
-  room: String,
-  instructor: String,
-});
+// const classSchema = new mongoose.Schema({
+//   name: { type: String, required: true },
+//   startTime: { type: Number, required: true },
+//   endTime: { type: Number, required: true },
+//   days: { type: String, required: true },
+//   room: String,
+//   instructor: String,
+// });
 
 userSchema.plugin(passportLocalMongoose);
 userSchema.plugin(findOrCreate);
 
 const User = new mongoose.model("User", userSchema);
-const Class = new mongoose.model("Class", classSchema);
+// const Class = new mongoose.model("Class", classSchema);
 
 passport.use(User.createStrategy());
 
@@ -75,9 +76,12 @@ passport.use(
       callbackURL: "http://localhost:3000/auth/google/scheduleshare",
     },
     function (accessToken, refreshToken, profile, cb) {
-      User.findOrCreate({ googleId: profile.id, name: profile.displayName }, function (err, user) {
-        return cb(err, user);
-      });
+      User.findOrCreate(
+        { googleId: profile.id, name: profile.displayName },
+        function (err, user) {
+          return cb(err, user);
+        }
+      );
     }
   )
 );
@@ -86,18 +90,35 @@ app.get("/", function (req, res) {
   res.render("home");
 });
 
-app.get("/dashboard", function(req, res) {
+app.get("/dashboard", function (req, res) {
   if (req.isAuthenticated()) {
-    res.render("schedule", {user: req.user});
-  }
-  else {
+    res.render("schedule", { user: req.user });
+  } else {
     res.redirect("/");
   }
-})
+});
 
-app.post('/dashboard', function(req, res) {
-  console.log(req.body);
-})
+app.post("/dashboard", function (req, res) {
+  let start = req.body.startTime;
+  let end = req.body.endTime;
+  let weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+  let days = [];
+  let stringified = JSON.stringify(req.body);
+  weekdays.forEach((element) => {
+    if (stringified.includes(element)) {
+      days.push(element);
+    }
+  })
+  req.body.startTime = parseInt(start.substring(0, 2)) * 60 + parseInt(start.substring(3));
+  req.body.endTime = parseInt(end.substring(0, 2)) * 60 + parseInt(end.substring(3));
+  req.body.days = days;
+  User.updateOne({ _id: req.user._id }, { $push: { classes: req.body } })
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((err) => console.log(err));
+    res.redirect("/dashboard");
+});
 
 app.get(
   "/auth/google",

@@ -14,75 +14,84 @@
             </h1>
             <button class="add-course-btn">+</button>
         </div>
+        <div class="schedule schedule-setwidth">
+            <table class="schedule schedule-setwidth">
+                <thead>
+                    <th></th>
+                    <th scope="col">Monday</th>
+                    <th scope="col">Tuesday</th>
+                    <th scope="col">Wednesday</th>
+                    <th scope="col">Thursday</th>
+                    <th scope="col">Friday</th>
+                    <th scope="col">Saturday</th>
+                    <th scope="col">Sunday</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>8:00 AM</td>
+                        <td rowspan="12"></td>
+                        <td rowspan="12"></td>
+                        <td rowspan="12"></td>
+                        <td rowspan="12"></td>
+                        <td rowspan="12"></td>
+                        <td rowspan="12"></td>
+                        <td rowspan="12"></td>
 
-        <table class="schedule schedule-setwidth">
-            <thead>
-                <th></th>
-                <th scope="col">Monday</th>
-                <th scope="col">Tuesday</th>
-                <th scope="col">Wednesday</th>
-                <th scope="col">Thursday</th>
-                <th scope="col">Friday</th>
-                <th scope="col">Saturday</th>
-                <th scope="col">Sunday</th>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>8:00 AM</td>
-                    <td rowspan="12"></td>
-                    <td rowspan="12"></td>
-                    <td rowspan="12"></td>
-                    <td rowspan="12"></td>
-                    <td rowspan="12"></td>
-                    <td rowspan="12"></td>
-                    <td rowspan="12"></td>
-
-                </tr>
-                <tr>
-                    <td>9:00 PM</td>
-                </tr>
-                <tr>
-                    <td>10:00 PM</td>
-                </tr>
-                <tr>
-                    <td>11:00 PM</td>
-                </tr>
-                <tr>
-                    <td>12:00 PM</td>
-                </tr>
-                <tr>
-                    <td>1:00 PM</td>
-                </tr>
-                <tr>
-                    <td>2:00 PM</td>
-                </tr>
-                <tr>
-                    <td>3:00 PM</td>
-                </tr>
-                <tr>
-                    <td>4:00 PM</td>
-                </tr>
-                <tr>
-                    <td>5:00 PM</td>
-                </tr>
-                <tr>
-                    <td>6:00 PM</td>
-                </tr>
-                <tr>
-                    <td>7:00 PM</td>
-                </tr>
-            </tbody>
-        </table>
+                    </tr>
+                    <tr>
+                        <td>9:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td>10:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td>11:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td>12:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td>1:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td>2:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td>3:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td>4:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td>5:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td>6:00 PM</td>
+                    </tr>
+                    <tr>
+                </tbody>
+            </table>
+            <% user.classes.forEach((element)=> {%>
+                <% element.days.forEach((el)=> {%>
+                    <div class="schedule-block <%=el%>"
+                        style="height:<%=(element.endTime - element.startTime)/60 * 52%>px; top:<%=28 + (element.startTime - 480)/60*52%>px">
+                        <p>
+                            <%=element.className%>
+                        </p>
+                    </div>
+                    <%})%>
+                        <%});%>
+        </div>
         <div class="hover add-class hidden">
             <h2>Add New Class</h2>
             <form method="post" action="/dashboard">
                 <p>x</p>
                 <label>Class Name: </label>
-                <input type="text" name="class-name" required><br>
+                <input type="text" name="className" required><br>
                 <label>Start Time: </label>
-                <input type="time" name="start-name" required><br>
+                <input type="time" name="startTime" required><br>
                 <label>End Time: </label>
-                <input type="time" name="end-name" placeholder="Class End Time" required>
+                <input type="time" name="endTime" placeholder="Class End Time" required>
                 <br>
                 <div class="checkbox-day">
                     <label>Sun</label><br>
@@ -119,14 +128,45 @@
                 <button type="submit">Add</button>
             </form>
         </div>
+        <div class="hover edit-class hidden">
+            <p>x</p>
+            <i class="fas fa-edit"></i>
+            <h2>Calc 3</h2>
+            <p>Days: Mon, Wed, Fri</p>
+            <p>Time: 10:00 - 10:50</p>
+            <p>Professor: Unspecified</p>
+            <p>Room: Unspecified</p>
+        </div>
+        <div class="fullscreen hidden"></div>
 
         <script>
-            document.querySelector('.add-course-btn').addEventListener("click", function () {
-                document.querySelector('.hover.add-class').classList.remove('hidden');
-
+            document.querySelector('.fullscreen').addEventListener('click', function () {
+                if (!document.querySelector('.hover.add-class').classList.contains("hidden")) {
+                    document.querySelector('.hover.add-class').classList.add('hidden');
+                    document.querySelector('.fullscreen').classList.add('hidden');
+                }
+                if (!document.querySelector('.hover.edit-class').classList.contains('hidden')) {
+                    document.querySelector('.hover.edit-class').classList.add('hidden');
+                    document.querySelector('.fullscreen').classList.add('hidden');
+                }
             })
-            document.querySelector('.add-class p').addEventListener("click", function () {
-                document.querySelector('.hover.add-class ').classList.add('hidden');
+            document.querySelector('.add-course-btn').addEventListener("click", function() {
+                document.querySelector('.hover.add-class').classList.remove('hidden');
+                document.querySelector('.fullscreen').classList.remove('hidden');
+            })
+            document.querySelector('.add-class p:first-child').addEventListener("click", function () {
+                document.querySelector('.hover.add-class').classList.add('hidden');
+                document.querySelector('.fullscreen').classList.add('hidden');
+            })
+            document.querySelector('.edit-class p:first-child').addEventListener("click", function () {
+                document.querySelector('.hover.edit-class').classList.add('hidden');
+                document.querySelector('.fullscreen').classList.add('hidden');
+            })
+            document.querySelectorAll(".schedule-block").forEach((element) => {
+                element.addEventListener("click", function () {
+                    document.querySelector('.hover.edit-class').classList.remove('hidden');
+                    document.querySelector('.fullscreen').classList.remove('hidden');
+                });
             })
 
         </script>
