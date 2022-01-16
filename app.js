@@ -77,7 +77,7 @@ passport.use(
     },
     function (accessToken, refreshToken, profile, cb) {
       User.findOrCreate(
-        { googleId: profile.id, name: profile.displayName },
+        { googleId: profile.id, name: profile.displayName, username: profile.emails[0].value },
         function (err, user) {
           return cb(err, user);
         }
