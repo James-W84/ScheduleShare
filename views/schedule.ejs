@@ -39,13 +39,13 @@
 
                     </tr>
                     <tr>
-                        <td>9:00 PM</td>
+                        <td>9:00 AM</td>
                     </tr>
                     <tr>
-                        <td>10:00 PM</td>
+                        <td>10:00 AM</td>
                     </tr>
                     <tr>
-                        <td>11:00 PM</td>
+                        <td>11:00 AM</td>
                     </tr>
                     <tr>
                         <td>12:00 PM</td>
@@ -71,16 +71,27 @@
                     <tr>
                 </tbody>
             </table>
-            <% user.classes.forEach((element)=> {%>
+            <% user.classes.forEach((element, index)=> {%>
                 <% element.days.forEach((el)=> {%>
-                    <div class="schedule-block <%=el%>"
-                        style="height:<%=(element.endTime - element.startTime)/60 * 52%>px; top:<%=28 + (element.startTime - 480)/60*52%>px">
+                    <div class="schedule-block <%=el%>" style="height:<%=(element.numEndTime - element.numStartTime)/60 * 52%>px; top:<%=28 + (element.numStartTime - 480)/60*52%>px; background-color:rgba(<%=colors[index]%>, 0.4);">
                         <p>
                             <%=element.className%>
                         </p>
+                        <p class="hidden days">
+                            <%=element.days%>
+                        </p>
+                        <p class="hidden startTime"><%=element.startTime%>
+                        </p>
+                        <p class="hidden endTime"><%=element.endTime%></p>
+                        <p class="hidden room">
+                            <%=element.room%>
+                        </p>
+                        <p class="hidden prof">
+                            <%=element.prof%>
+                        </p>
                     </div>
-                    <%})%>
-                        <%});%>
+                <%})%>
+            <%});%>
         </div>
         <div class="hover add-class hidden">
             <h2>Add New Class</h2>
@@ -89,9 +100,9 @@
                 <label>Class Name: </label>
                 <input type="text" name="className" required><br>
                 <label>Start Time: </label>
-                <input type="time" name="startTime" required><br>
+                <input type="time" name="startTime" required min="08:00" max="19:00"><br>
                 <label>End Time: </label>
-                <input type="time" name="endTime" placeholder="Class End Time" required>
+                <input type="time" name="endTime" required min="08:00" max="19:00">
                 <br>
                 <div class="checkbox-day">
                     <label>Sun</label><br>
@@ -131,29 +142,83 @@
         <div class="hover edit-class hidden">
             <p>x</p>
             <i class="fas fa-edit"></i>
-            <h2>Calc 3</h2>
-            <p>Days: Mon, Wed, Fri</p>
-            <p>Time: 10:00 - 10:50</p>
-            <p>Professor: Unspecified</p>
-            <p>Room: Unspecified</p>
+            <h2></h2>
+            <p class="days"></p>
+            <p class="time"></p>
+            <p class="room"></p>
+            <p class="prof"></p>
+            <p class="hidden start-time"></p>
+            <p class="hidden end-time"></p>
+            <form method="post" action="/delete">
+                <input type="text" class="hidden" name="className" id="className">
+                <button type="submit" class="delete">Delete Class</button>
+            </form>
+        </div>
+        <div class="hover editor hidden">
+            <h2>Edit Class</h2>
+            <form method="post" action="/edit">
+                <p>x</p>
+                <input type="text" class="hidden" name="oldClassName" id="oldClassName">
+                <label>Class Name: </label>
+                <input type="text" name="className" id="className" required><br>
+                <label>Start Time: </label>
+                <input type="time" name="startTime" id="startTime" required><br>
+                <label>End Time: </label>
+                <input type="time" name="endTime" id="endTime" required>
+                <br>
+                <div class="checkbox-day">
+                    <label>Sun</label><br>
+                    <input type="checkbox" name="sunday">
+                </div>
+                <div class="checkbox-day">
+                    <label>Mon</label><br>
+                    <input type="checkbox" name="monday">
+                </div>
+                <div class="checkbox-day">
+                    <label>Tue</label><br>
+                    <input type="checkbox" name="tuesday">
+                </div>
+                <div class="checkbox-day">
+                    <label>Wed</label><br>
+                    <input type="checkbox" name="wednesday">
+                </div>
+                <div class="checkbox-day">
+                    <label>Thu</label><br>
+                    <input type="checkbox" name="thursday">
+                </div>
+                <div class="checkbox-day">
+                    <label>Fri</label><br>
+                    <input type="checkbox" name="friday">
+                </div>
+                <div class="checkbox-day">
+                    <label id="st">Sat</label><br>
+                    <input type="checkbox" name="saturday">
+                </div><br>
+                <label>Room: </label>
+                <input type="text" name="room" id="room" placeholder="(none)"><br>
+                <label>Instructor: </label>
+                <input type="text" name="prof" id="prof" placeholder="(none)"><br>
+                <button type="submit">Edit</button>
+            </form>
         </div>
         <div class="fullscreen hidden"></div>
 
         <script>
+            // Full-screen div to click out of hover panes
             document.querySelector('.fullscreen').addEventListener('click', function () {
-                if (!document.querySelector('.hover.add-class').classList.contains("hidden")) {
-                    document.querySelector('.hover.add-class').classList.add('hidden');
-                    document.querySelector('.fullscreen').classList.add('hidden');
-                }
-                if (!document.querySelector('.hover.edit-class').classList.contains('hidden')) {
-                    document.querySelector('.hover.edit-class').classList.add('hidden');
-                    document.querySelector('.fullscreen').classList.add('hidden');
-                }
+                document.querySelector('.hover.add-class').classList.add('hidden');
+                document.querySelector('.hover.edit-class').classList.add('hidden');
+                document.querySelector('.hover.editor').classList.add('hidden');
+                document.querySelector('.fullscreen').classList.add('hidden');
             })
-            document.querySelector('.add-course-btn').addEventListener("click", function() {
+
+            // Add Course Button Pane
+            document.querySelector('.add-course-btn').addEventListener("click", function () {
                 document.querySelector('.hover.add-class').classList.remove('hidden');
                 document.querySelector('.fullscreen').classList.remove('hidden');
             })
+
+            // 'x' button hide panes
             document.querySelector('.add-class p:first-child').addEventListener("click", function () {
                 document.querySelector('.hover.add-class').classList.add('hidden');
                 document.querySelector('.fullscreen').classList.add('hidden');
@@ -162,11 +227,81 @@
                 document.querySelector('.hover.edit-class').classList.add('hidden');
                 document.querySelector('.fullscreen').classList.add('hidden');
             })
+            document.querySelector('.editor p:first-child').addEventListener("click", function () {
+                document.querySelector('.hover.editor').classList.add('hidden');
+                document.querySelector('.fullscreen').classList.add('hidden');
+            })
+
+            // Open detail pane when clicking on calendar
             document.querySelectorAll(".schedule-block").forEach((element) => {
                 element.addEventListener("click", function () {
-                    document.querySelector('.hover.edit-class').classList.remove('hidden');
+                    const editPanel = document.querySelector('.hover.edit-class');
+                    editPanel.classList.remove('hidden');
                     document.querySelector('.fullscreen').classList.remove('hidden');
+                    editPanel.querySelector('h2').innerHTML = element.querySelector('p').innerHTML;
+                    editPanel.querySelector('.time').innerHTML = `Time: ${element.querySelector('.startTime').innerHTML} - ${element.querySelector('.endTime').innerHTML}`
+                    editPanel.querySelector('.days').innerHTML = "Days: " + element.querySelector('.days').innerHTML.replace(new RegExp(',', 'g'), ', ');
+
+                    if (element.querySelector('.room').innerHTML.trim().length > 0) {
+                        editPanel.querySelector('.room').innerHTML = "Room: " + element.querySelector('.room').innerHTML;
+                    }
+                    else {
+                        editPanel.querySelector('.room').innerHTML = "Room: Unspecified";
+                    }
+                    if (element.querySelector('.prof').innerHTML.trim().length > 0) {
+                        editPanel.querySelector('.prof').innerHTML = "Instructor: " + element.querySelector('.prof').innerHTML;
+                    }
+                    else {
+                        editPanel.querySelector('.prof').innerHTML = "Instructor: Unspecified";
+                    }
+                    editPanel.querySelector(".hidden.start-time").innerHTML = element.querySelector('.startTime').innerHTML;
+                    editPanel.querySelector(".hidden.end-time").innerHTML = element.querySelector('.endTime').innerHTML;
+                    editPanel.querySelector("#className").value = editPanel.querySelector("h2").innerHTML.trim();
                 });
+            })
+
+            // Opening edit form
+            document.querySelector('.edit-class .fa-edit').addEventListener('click', function () {
+                const parent = this.parentElement;
+                const editPane = document.querySelector(".hover.editor");
+                editPane.classList.remove("hidden");
+                editPane.querySelector("#oldClassName").value = parent.querySelector('h2').innerHTML.trim();
+                editPane.querySelector("#className").value = parent.querySelector('h2').innerHTML.trim();
+                let startTime = parent.querySelector(".start-time").innerHTML.trim();
+                let isPM = startTime.includes("PM") && startTime.substring(0, 2) != "12";
+                 startTime = startTime.substring(0, 5).trim();
+                if (startTime.length < 5) {
+                    startTime = "0" + startTime;
+                }
+                if(isPM) {
+                    let hour = startTime.substring(0, 2);
+                    startTime = `${parseInt(hour) + 12}${startTime.substring(2)}`;
+                }
+                editPane.querySelector("#startTime").value = startTime;
+                let endTime = parent.querySelector(".end-time").innerHTML.trim();
+                isPM = endTime.includes("PM") && endTime.substring(0, 2) != "12";
+                endTime = endTime.substring(0, 5).trim();
+                if (endTime.length < 5) {
+                    endTime = "0" + endTime;
+                }
+                if(isPM) {
+                    let hour = endTime.substring(0, 2);
+                    endTime = `${parseInt(hour) + 12}${endTime.substring(2)}`;
+                }
+                editPane.querySelector("#endTime").value = endTime;
+                editPane.querySelectorAll('.checkbox-day input').forEach((element) => {
+                    if (parent.querySelector('.days').innerHTML.includes(element.name)) {
+                        element.checked = true;
+                    }
+                })
+                let roomText = parent.querySelector(".room").innerHTML;
+                if (!roomText.includes('Unspecified')) {
+                    editPane.querySelector("#room").value = roomText.substring(roomText.indexOf("Room: ") + 6).trim();
+                }
+                let profText = parent.querySelector(".prof").innerHTML;
+                if (!profText.includes('Unspecified')) {
+                    editPane.querySelector("#prof").value = profText.substring(profText.indexOf("Instructor: ") + 12).trim();
+                }
             })
 
         </script>

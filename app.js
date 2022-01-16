@@ -90,9 +90,47 @@ app.get("/", function (req, res) {
   res.render("home");
 });
 
+// Recursively generate new colors
+function generateColors(num, arr, step=1, n=1) {
+  if (n > num) {
+    return;
+  }
+  else {
+    let r = n%6;
+    switch(r) {
+      case 1:
+        arr.push(`0, 0, ${255/step}`);
+        break;
+      case 2:
+        arr.push(`${255/step}, 0, 0`);
+        break;
+      case 3:
+        arr.push(`0, ${255/step}, 0`);
+        break;
+      case 4:
+        arr.push(`${255/step}, ${255/step}, 0`);
+        break;
+      case 5:
+        arr.push(`${255/step}, 0, ${255/step}`);
+        break;
+      case 0:
+        arr.push(`0, ${255/step}, ${255/step}`);
+        step++;
+        break;
+      default:
+        break;
+    }
+    generateColors(num, arr, step, n+1);
+  }
+  
+}
+
 app.get("/dashboard", function (req, res) {
+  const numClasses = req.user.classes.length;
+  let colors = [];
+  generateColors(numClasses, colors);
   if (req.isAuthenticated()) {
-    res.render("schedule", { user: req.user });
+    res.render("schedule", { user: req.user, colors: colors });
   } else {
     res.redirect("/");
   }
@@ -109,24 +147,70 @@ app.post("/dashboard", function (req, res) {
       days.push(element);
     }
   })
-  req.body.startTime = parseInt(start.substring(0, 2)) * 60 + parseInt(start.substring(3));
-  req.body.endTime = parseInt(end.substring(0, 2)) * 60 + parseInt(end.substring(3));
+  req.body.numStartTime = parseInt(start.substring(0, 2)) * 60 + parseInt(start.substring(3));
+  req.body.numEndTime = parseInt(end.substring(0, 2)) * 60 + parseInt(end.substring(3));
+  if (req.body.numStartTime >= 780) {
+    let min = req.body.numStartTime%60;
+    if (min < 10) {
+      min = "0" + min;
+    }
+    req.body.startTime = `${(Math.floor(req.body.numStartTime/60) - 12)}:${min} PM`;
+  }
+  else if(req.body.numStartTime >= 720) {
+    req.body.startTime += " PM";
+  }
+  else {
+    req.body.startTime += " AM";
+  }
+  if (req.body.numEndTime >= 780) {
+    let min = req.body.numEndTime%60;
+    if (min < 10) {
+      min = "0" + min;
+    }
+    req.body.endTime = `${(Math.floor(req.body.numEndTime/60) - 12)}:${min} PM`;
+  }
+  else if(req.body.numEndTime >= 720) {
+    req.body.endTime += " PM";
+  }
+  else {
+    req.body.endTime += " AM";
+  }
   req.body.days = days;
   User.updateOne({ _id: req.user._id }, { $push: { classes: req.body } })
     .then((result) => {
       console.log(result);
     })
     .catch((err) => console.log(err));
-    res.redirect("/dashboard");
+    setTimeout(() => res.redirect("/dashboard"), 500);
+    
 });
 
-app.get(
-  "/auth/google",
+app.post("/delete", function(req, res) {
+  User.updateOne({name: req.user.name }, { $pull: { classes: { className: req.body.className } } })
+  .then((result) => {
+    console.log(result);
+  })
+  .catch((err) => console.log(err));
+  res.redirect("/dashboard");
+})
+
+app.post("/edit", function(req, res) {
+  console.log(req.body);
+  
+  User.updateOne({name: req.user.name }, { $pull: { classes: { className: req.body.oldClassName } } })
+  .then((result) => {
+    console.log(result);
+  })
+  .catch((err) => console.log(err));
+
+  res.redirect(307, "/dashboard");
+})
+
+app.get("/auth/google",
   passport.authenticate("google", { scope: ["profile"] })
 );
 
-app.get(
-  "/auth/google/scheduleshare",
+app.get("/auth/google/scheduleshare",
   passport.authenticate("google", { failureRedirect: "/" }),
   function (req, res) {
     res.redirect("/dashboard");

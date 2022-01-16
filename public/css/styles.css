@@ -307,6 +307,12 @@ thead th {
     color: lightblue;
 }
 
+.delete {
+    color: red;
+    border: 1px solid black;
+    border-radius: 4px;
+}
+
 .fullscreen {
     height: 100%;
     left: 0;
@@ -322,10 +328,8 @@ thead th {
 
 /* Class Schedule Blocks */
 .schedule-block { 
-    background-color: rgba(0, 0, 255, .4);
     border-radius: 7px;
     cursor: pointer;
-    opacity: 0.4;
     position: absolute;
     width: 150px;
 }
@@ -341,7 +345,7 @@ thead th {
 }
 
 .tuesday {
-    left: 300;
+    left: 300px;
 }
 
 .wednesday {
@@ -349,7 +353,7 @@ thead th {
 }
 
 .thursday {
-    left: 600;
+    left: 600px;
 }
 
 .friday {
@@ -362,4 +366,8 @@ thead th {
 
 .sunday {
     left: 1050px;
+}
+
+.days {
+    text-transform: capitalize;
 }
