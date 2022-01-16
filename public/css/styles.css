@@ -162,18 +162,30 @@ button {
 }
 
 /* Schedule Page */
+
 .full-page {
     align-items: center;
+    background-size: 1440px;
     background-image: linear-gradient(to right, #6998AB, #B1D0E0);
     overflow: scroll;
+    background-repeat:repeat-y;
+    width: 1440px;
+    height: 100vh;
+}
+
+.signout-button {
+    position: fixed;
+    right: 1%;
+    top: 1%;
 }
 
 .fa-sign-out-alt {
     color:  #1A374D;
     font-size: 3rem;
-    position: absolute;
-    right: 1%;
-    top: 1%;
+}
+
+@media screen {
+    
 }
 
 .login-box {
