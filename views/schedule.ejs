@@ -1,0 +1,133 @@
+<%- include('partials/header') %>
+
+    <body class="full-page">
+        <div class="schedule-menubar menubar">
+            <i class="fas fa-bars"></i>
+            <a class="menu-item">Profile</a>
+            <a class="menu-item">Friends</a>
+            <a class="menu-item">Groups</a>
+        </div>
+        <a href="/logout"><i class="fas fa-sign-out-alt"></i></a>
+        <div class="schedule-header schedule-setwidth">
+            <h1>
+                <%=user.name%>'s Schedule
+            </h1>
+            <button class="add-course-btn">+</button>
+        </div>
+
+        <table class="schedule schedule-setwidth">
+            <thead>
+                <th></th>
+                <th scope="col">Monday</th>
+                <th scope="col">Tuesday</th>
+                <th scope="col">Wednesday</th>
+                <th scope="col">Thursday</th>
+                <th scope="col">Friday</th>
+                <th scope="col">Saturday</th>
+                <th scope="col">Sunday</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>8:00 AM</td>
+                    <td rowspan="12"></td>
+                    <td rowspan="12"></td>
+                    <td rowspan="12"></td>
+                    <td rowspan="12"></td>
+                    <td rowspan="12"></td>
+                    <td rowspan="12"></td>
+                    <td rowspan="12"></td>
+
+                </tr>
+                <tr>
+                    <td>9:00 PM</td>
+                </tr>
+                <tr>
+                    <td>10:00 PM</td>
+                </tr>
+                <tr>
+                    <td>11:00 PM</td>
+                </tr>
+                <tr>
+                    <td>12:00 PM</td>
+                </tr>
+                <tr>
+                    <td>1:00 PM</td>
+                </tr>
+                <tr>
+                    <td>2:00 PM</td>
+                </tr>
+                <tr>
+                    <td>3:00 PM</td>
+                </tr>
+                <tr>
+                    <td>4:00 PM</td>
+                </tr>
+                <tr>
+                    <td>5:00 PM</td>
+                </tr>
+                <tr>
+                    <td>6:00 PM</td>
+                </tr>
+                <tr>
+                    <td>7:00 PM</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="hover add-class hidden">
+            <h2>Add New Class</h2>
+            <form method="post" action="/dashboard">
+                <p>x</p>
+                <label>Class Name: </label>
+                <input type="text" name="class-name" required><br>
+                <label>Start Time: </label>
+                <input type="time" name="start-name" required><br>
+                <label>End Time: </label>
+                <input type="time" name="end-name" placeholder="Class End Time" required>
+                <br>
+                <div class="checkbox-day">
+                    <label>Sun</label><br>
+                    <input type="checkbox" name="sunday">
+                </div>
+                <div class="checkbox-day">
+                    <label>Mon</label><br>
+                    <input type="checkbox" name="monday">
+                </div>
+                <div class="checkbox-day">
+                    <label>Tue</label><br>
+                    <input type="checkbox" name="tuesday">
+                </div>
+                <div class="checkbox-day">
+                    <label>Wed</label><br>
+                    <input type="checkbox" name="wednesday">
+                </div>
+                <div class="checkbox-day">
+                    <label>Thu</label><br>
+                    <input type="checkbox" name="thursday">
+                </div>
+                <div class="checkbox-day">
+                    <label>Fri</label><br>
+                    <input type="checkbox" name="friday">
+                </div>
+                <div class="checkbox-day">
+                    <label id="st">Sat</label><br>
+                    <input type="checkbox" name="saturday">
+                </div><br>
+                <label>Room: </label>
+                <input type="text" name="room" placeholder="(optional)"><br>
+                <label>Instructor: </label>
+                <input type="text" name="prof" placeholder="(optional)"><br>
+                <button type="submit">Add</button>
+            </form>
+        </div>
+
+        <script>
+            document.querySelector('.add-course-btn').addEventListener("click", function () {
+                document.querySelector('.hover.add-class').classList.remove('hidden');
+
+            })
+            document.querySelector('.add-class p').addEventListener("click", function () {
+                document.querySelector('.hover.add-class ').classList.add('hidden');
+            })
+
+        </script>
+        <%- include('partials/footer') %>

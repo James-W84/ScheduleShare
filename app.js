@@ -34,11 +34,11 @@ mongoose
   .catch((err) => console.log(err));
 
 const userSchema = new mongoose.Schema({
-  username: String,
-  password: String,
+  name: String,
   googleId: String,
   friends: Array,
-  classes: Array,
+  groups: Array,
+  classes: Array
 });
 
 const classSchema = new mongoose.Schema({
@@ -73,10 +73,9 @@ passport.use(
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: "http://localhost:3000/auth/google/scheduleshare",
-      userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
     },
     function (accessToken, refreshToken, profile, cb) {
-      User.findOrCreate({ googleId: profile.id }, function (err, user) {
+      User.findOrCreate({ googleId: profile.id, name: profile.displayName }, function (err, user) {
         return cb(err, user);
       });
     }
@@ -87,8 +86,17 @@ app.get("/", function (req, res) {
   res.render("home");
 });
 
-app.get("/login", function(req, res) {
-  res.render("login");
+app.get("/dashboard", function(req, res) {
+  if (req.isAuthenticated()) {
+    res.render("schedule", {user: req.user});
+  }
+  else {
+    res.redirect("/");
+  }
+})
+
+app.post('/dashboard', function(req, res) {
+  console.log(req.body);
 })
 
 app.get(
@@ -98,13 +106,13 @@ app.get(
 
 app.get(
   "/auth/google/scheduleshare",
-  passport.authenticate("google", { failureRedirect: "/login" }),
+  passport.authenticate("google", { failureRedirect: "/" }),
   function (req, res) {
-    res.redirect("/schedule");
+    res.redirect("/dashboard");
   }
 );
 
 app.get("/logout", function (req, res) {
   req.logout();
-  res.redirect("/");
+  res.render("logout");
 });

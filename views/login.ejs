@@ -1,15 +1,17 @@
 <%- include('partials/header') %>
-<img src="/images/logo.jpeg" alt="ScheduleShare Logo" class="large-logo-home logo">
-    <img src="/images/logo-small.jpeg" alt="ScheduleShare Logo" class="small-logo-home logo">
-    <body class="full-page">
-        <h1>Login</h1>
-        <form action="/login" method="post">
-            <input type="text" name="username" placeholder="Username/Email"> <br>
-            <input type="password" name="password" placeholder="Password"> <br>
-            <button type="submit">Login</button>
-        </form>
-        <a>Register</a>
-        <a>Forgot Password</a>
-        <a href="/auth/google"><button>Sign in with Google</button></a>
+    
 
-<%- include('partials/footer') %>
+    <body class="full-page">
+        <div class="login-box">
+            <h1 class="single-header">Login</h1>
+            <form action="/login" method="post">
+                <input type="text" name="username" placeholder="Username/Email"> <br>
+                <input type="password" name="password" placeholder="Password"> <br>
+                <button type="submit">Login</button>
+            </form>
+            <a>Register</a>
+            <a>Forgot Password</a>
+            <a href="/auth/google"><button>Sign in with Google</button></a>
+        </div>
+
+        <%- include('partials/footer') %>
