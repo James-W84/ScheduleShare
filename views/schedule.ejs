@@ -72,16 +72,20 @@
             </table>
             <% user.classes.forEach((element, index)=> {%>
                 <% element.days.forEach((el)=> {%>
-                    <div class="schedule-block <%=el%>" style="height:<%=(element.numEndTime - element.numStartTime)/60 * 52%>px; top:<%=28 + (element.numStartTime - 480)/60*52%>px; background-color:rgba(<%=colors[index]%>, 0.4);">
+                    <div class="schedule-block <%=el%>"
+                        style="height:<%=(element.numEndTime - element.numStartTime)/60 * 52%>px; top:<%=28 + (element.numStartTime - 480)/60*52%>px; background-color:rgba(<%=colors[index]%>, 0.4);">
                         <p>
                             <%=element.className%>
                         </p>
                         <p class="hidden days">
                             <%=element.days%>
                         </p>
-                        <p class="hidden startTime"><%=element.startTime%>
+                        <p class="hidden startTime">
+                            <%=element.startTime%>
                         </p>
-                        <p class="hidden endTime"><%=element.endTime%></p>
+                        <p class="hidden endTime">
+                            <%=element.endTime%>
+                        </p>
                         <p class="hidden room">
                             <%=element.room%>
                         </p>
@@ -89,12 +93,12 @@
                             <%=element.prof%>
                         </p>
                     </div>
-                <%})%>
-            <%});%>
+                    <%})%>
+                        <%});%>
         </div>
         <div class="hover add-class hidden">
             <h2>Add New Class</h2>
-            <form method="post" action="/dashboard">
+            <form action="/dashboard" method="post">
                 <p>x</p>
                 <label>Class Name: </label>
                 <input type="text" name="className" required><br>
@@ -105,31 +109,31 @@
                 <br>
                 <div class="checkbox-day">
                     <label>Sun</label><br>
-                    <input type="checkbox" name="sunday">
+                    <input type="checkbox" name="sunday" class="checkbox-day" required onclick="deRequireCb(checkbox-day)" oninvalid="this.setCustomValidity('Select at least one weekday')">
                 </div>
                 <div class="checkbox-day">
                     <label>Mon</label><br>
-                    <input type="checkbox" name="monday">
+                    <input type="checkbox" name="monday" class="checkbox-day" required onclick="deRequireCb(checkbox-day)">
                 </div>
                 <div class="checkbox-day">
                     <label>Tue</label><br>
-                    <input type="checkbox" name="tuesday">
+                    <input type="checkbox" name="tuesday" class="checkbox-day" required onclick="deRequireCb(checkbox-day)">
                 </div>
                 <div class="checkbox-day">
                     <label>Wed</label><br>
-                    <input type="checkbox" name="wednesday">
+                    <input type="checkbox" name="wednesday" class="checkbox-day" required onclick="deRequireCb(checkbox-day)">
                 </div>
                 <div class="checkbox-day">
                     <label>Thu</label><br>
-                    <input type="checkbox" name="thursday">
+                    <input type="checkbox" name="thursday" class="checkbox-day" required onclick="deRequireCb(checkbox-day)">
                 </div>
                 <div class="checkbox-day">
                     <label>Fri</label><br>
-                    <input type="checkbox" name="friday">
+                    <input type="checkbox" name="friday" class="checkbox-day" required onclick="deRequireCb(checkbox-day)">
                 </div>
                 <div class="checkbox-day">
                     <label id="st">Sat</label><br>
-                    <input type="checkbox" name="saturday">
+                    <input type="checkbox" name="saturday" class="checkbox-day" required onclick="deRequireCb(checkbox-day)">
                 </div><br>
                 <label>Room: </label>
                 <input type="text" name="room" placeholder="(optional)"><br>
@@ -165,33 +169,33 @@
                 <label>End Time: </label>
                 <input type="time" name="endTime" id="endTime" required>
                 <br>
-                <div class="checkbox-day">
+                <div class="edit-day">
                     <label>Sun</label><br>
-                    <input type="checkbox" name="sunday">
+                    <input type="checkbox" name="sunday" class="edit-day" required onclick="deRequireCb(edit-day)" oninvalid="this.setCustomValidity('Select at least one weekday')">
                 </div>
-                <div class="checkbox-day">
+                <div class="edit-day">
                     <label>Mon</label><br>
-                    <input type="checkbox" name="monday">
+                    <input type="checkbox" name="monday" class="edit-day" required onclick="deRequireCb(edit-day)">
                 </div>
-                <div class="checkbox-day">
+                <div class="edit-day">
                     <label>Tue</label><br>
-                    <input type="checkbox" name="tuesday">
+                    <input type="checkbox" name="tuesday" class="edit-day" required onclick="deRequireCb(edit-day)">
                 </div>
-                <div class="checkbox-day">
+                <div class="edit-day">
                     <label>Wed</label><br>
-                    <input type="checkbox" name="wednesday">
+                    <input type="checkbox" name="wednesday" class="edit-day" required onclick="deRequireCb(edit-day)">
                 </div>
-                <div class="checkbox-day">
+                <div class="edit-day">
                     <label>Thu</label><br>
-                    <input type="checkbox" name="thursday">
+                    <input type="checkbox" name="thursday" class="edit-day" required onclick="deRequireCb(edit-day)">
                 </div>
-                <div class="checkbox-day">
+                <div class="edit-day">
                     <label>Fri</label><br>
-                    <input type="checkbox" name="friday">
+                    <input type="checkbox" name="friday" class="edit-day" required onclick="deRequireCb(edit-day)">
                 </div>
-                <div class="checkbox-day">
+                <div class="edit-day">
                     <label id="st">Sat</label><br>
-                    <input type="checkbox" name="saturday">
+                    <input type="checkbox" name="saturday" class="edit-day" required onclick="deRequireCb(edit-day)">
                 </div><br>
                 <label>Room: </label>
                 <input type="text" name="room" id="room" placeholder="(none)"><br>
@@ -262,17 +266,18 @@
             // Opening edit form
             document.querySelector('.edit-class .fa-edit').addEventListener('click', function () {
                 const parent = this.parentElement;
+                document.querySelector('.edit-class').classList.add('hidden');
                 const editPane = document.querySelector(".hover.editor");
                 editPane.classList.remove("hidden");
                 editPane.querySelector("#oldClassName").value = parent.querySelector('h2').innerHTML.trim();
                 editPane.querySelector("#className").value = parent.querySelector('h2').innerHTML.trim();
                 let startTime = parent.querySelector(".start-time").innerHTML.trim();
                 let isPM = startTime.includes("PM") && startTime.substring(0, 2) != "12";
-                 startTime = startTime.substring(0, 5).trim();
+                startTime = startTime.substring(0, 5).trim();
                 if (startTime.length < 5) {
                     startTime = "0" + startTime;
                 }
-                if(isPM) {
+                if (isPM) {
                     let hour = startTime.substring(0, 2);
                     startTime = `${parseInt(hour) + 12}${startTime.substring(2)}`;
                 }
@@ -283,12 +288,12 @@
                 if (endTime.length < 5) {
                     endTime = "0" + endTime;
                 }
-                if(isPM) {
+                if (isPM) {
                     let hour = endTime.substring(0, 2);
                     endTime = `${parseInt(hour) + 12}${endTime.substring(2)}`;
                 }
                 editPane.querySelector("#endTime").value = endTime;
-                editPane.querySelectorAll('.checkbox-day input').forEach((element) => {
+                editPane.querySelectorAll('.edit-day input').forEach((element) => {
                     if (parent.querySelector('.days').innerHTML.includes(element.name)) {
                         element.checked = true;
                     }
@@ -302,6 +307,25 @@
                     editPane.querySelector("#prof").value = profText.substring(profText.indexOf("Instructor: ") + 12).trim();
                 }
             })
+
+            // Require at least one checkbox
+            function deRequireCb(boxClass) {
+                let boxes = document.getElementsByClassName(boxClass);
+                let oneChecked = false;
+                boxes.forEach((element) => {
+                    if (element.checked) oneChecked = true;
+                })
+
+                if (oneChecked) {
+                    boxes.forEach((element) => {
+                        element.required = false;
+                    })
+                } else {
+                    boxes.forEach((element) => {
+                        element.required = true;
+                    })
+                }
+            }
 
         </script>
         <%- include('partials/footer') %>

@@ -292,7 +292,7 @@ thead th {
     z-index: 2;
 }
 
-.checkbox-day {
+.checkbox-day, .edit-day {
     display: inline-block;
 }
 
@@ -350,6 +350,7 @@ thead th {
     color: rgba(0, 0, 0, 1);
     font-family: unset;
     font-weight: bold;
+    margin-top: 10px;
 }
 
 .monday {

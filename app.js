@@ -75,8 +75,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://schedulesharer.herokuapp.com/auth/google/scheduleshare"
-      // callbackURL: "http://localhost:3000/auth/google/scheduleshare"
+      callbackURL: process.env.CALLBACK_URL
     },
     function (accessToken, refreshToken, profile, cb) {
       User.findOrCreate(
