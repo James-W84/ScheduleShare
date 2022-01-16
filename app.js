@@ -35,7 +35,8 @@ mongoose
   .catch((err) => console.log(err));
 
 const userSchema = new mongoose.Schema({
-  username: String,
+  username_1: {type: String, sparse: true},
+  username: {type: String, sparse: true},
   name: String,
   googleId: String,
   friends: Array,
@@ -80,7 +81,7 @@ passport.use(
     function (accessToken, refreshToken, profile, cb) {
       console.log(profile);
       User.findOrCreate(
-        { googleId: profile.id, name: profile._json.name, username: profile.displayName},
+        { googleId: profile.id, name: profile._json.name},
         function (err, user) {
           return cb(err, user);
         }
