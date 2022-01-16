@@ -35,6 +35,7 @@ mongoose
   .catch((err) => console.log(err));
 
 const userSchema = new mongoose.Schema({
+  username: String,
   name: String,
   googleId: String,
   friends: Array,
@@ -73,11 +74,13 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://schedulesharer.herokuapp.com/auth/google/scheduleshare",
+      callbackURL: "https://schedulesharer.herokuapp.com/auth/google/scheduleshare"
+      // callbackURL: "http://localhost:3000/auth/google/scheduleshare"
     },
     function (accessToken, refreshToken, profile, cb) {
+      console.log(profile);
       User.findOrCreate(
-        { googleId: profile.id, name: profile.displayName, username: profile.emails[0].value },
+        { googleId: profile.id, name: profile._json.name, username: profile.displayName},
         function (err, user) {
           return cb(err, user);
         }
