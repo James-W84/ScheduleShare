@@ -35,8 +35,8 @@ mongoose
   .catch((err) => console.log(err));
 
 const userSchema = new mongoose.Schema({
-  username_1: {type: String, sparse: true},
-  username: {type: String, sparse: true},
+  username_1: {type: String, sparse: true, unique: false},
+  username: {type: String, sparse: true, unique: false},
   name: String,
   googleId: String,
   friends: Array,
