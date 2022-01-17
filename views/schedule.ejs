@@ -2,8 +2,8 @@
 
     <body class="full-page">
         <div class="schedule-menubar menubar">
-            <a class="menu-item">Profile</a>
-            <a class="menu-item">Friends</a>
+            <a class="menu-item" href="/dashboard">Dashboard</a>
+            <a class="menu-item" href="/friends">Friends</a>
             <a class="menu-item">Groups</a>
         </div>
         <a href="/logout" class="signout-button"><i class="fas fa-sign-out-alt"></i></a>
@@ -11,6 +11,7 @@
             <h1>
                 <%=user.name%>'s Schedule
             </h1>
+            <p>User ID: <%=user.username%></p>
             <button class="add-course-btn">+</button>
         </div>
         <div class="schedule schedule-setwidth">

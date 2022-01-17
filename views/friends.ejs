@@ -1,0 +1,62 @@
+<%- include('partials/header') %>
+
+    <body class="full-page friends-page">
+        <div class="schedule-menubar menubar">
+            <a class="menu-item" href="/dashboard">Dashboard</a>
+            <a class="menu-item" href="/friends">Friends</a>
+            <a class="menu-item">Groups</a>
+        </div>
+        <div class="flex-6">
+            <div class="friend-header">
+                <h2>Friends:</h2>
+            </div>
+            <%if (friends.length===0) {%>
+                <div class="friends-list">
+                    <div class="friend-entry">
+                        <a>
+                            <h3>You have no friends!</h3>
+                        </a>
+                        <p> Add some new friends here!</p>
+                    </div>
+                </div>
+                <%} else {%>
+                    <%friends.forEach((element)=> {%>
+                        <div class="friends-list">
+                            <div class="friend-entry">
+                                <a><h3><%=element.name%></h3></a>
+                                <p>User ID: <%=element.username%></p>
+                            </div>
+                        </div>
+                     <%})}%>
+        </div>
+        <div class="flex-6 add-friend">
+            <div class="friend-form">
+                <h3>Add New Friend:</h3>
+                <form action="/add-friend" method="post">
+                    <input type="number" name="friendId" placeholder="Friend's User ID" required><br>
+                    <button type="submit">Add Friend</button>
+                </form>
+            </div>
+            <div class="friend-requests">
+                <h3 id="req-title">Incoming Friend Requests (<%=friendRequests.length%>):</h3>
+                    <%friendRequests.forEach((element)=>{%>
+                        <div class="request">
+                            <h3><%=element.name%></h3>
+                            <p>User ID: <%=element.username%></p>
+                            <form method="post" action="/accept">
+                                <input type="text" class="hidden" name="reqId" value=<%=element.username%>>
+                                <button type="submit" id="accept-btn">Accept</button>
+                            </form>
+                            <form method="post" action="/decline"></formmethod>
+                                <input type="text" class="hidden" name="reqId" value=<%=element.username%>>
+                                <button type="submit" id="decline-btn">Decline</button>
+                            </form>
+                        </div>
+                    <%});%>
+            </div>
+        </div>
+
+        <script>
+
+        </script>
+        <%- include('partials/footer') %>

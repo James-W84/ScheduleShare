@@ -75,7 +75,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.CALLBACK_URL
+      callbackURL: process.env.CALLBACK_URL,
     },
     function (accessToken, refreshToken, profile, cb) {
       User.findOrCreate(
@@ -137,7 +137,7 @@ app.get("/dashboard", function (req, res) {
     generateColors(numClasses, colors);
     res.render("schedule", { user: req.user, colors: colors });
   } else {
-    res.redirect("/");
+    res.redirect("/auth/google");
   }
 });
 
@@ -241,3 +241,75 @@ app.get("/logout", function (req, res) {
   req.logout();
   res.render("logout");
 });
+
+app.get("/friends", function (req, res) {
+  if (req.isAuthenticated()) {
+    const friendArr = req.user.friends;
+    let requests = [];
+    let friends = [];
+    friendArr.forEach((element) => {
+      if (element.status === "request-from") {
+        requests.push(element);
+      } else if (element.status === "friend") {
+        friends.push(element);
+      }
+    });
+    res.render("friends", {
+      user: req.user,
+      friendRequests: requests,
+      friends: friends,
+    });
+  } else {
+    res.redirect("/auth/google");
+  }
+});
+
+app.post("/add-friend", function (req, res) {
+  User.findOne({ username: req.body.friendId }, function (err, user) {
+    if (err) {
+      console.log(err);
+      res.redirect("/friends");
+    } else {
+      let request = {
+        name: req.user.name,
+        username: req.user.username,
+        status: "request-from",
+      };
+      let status = {
+        name: user.name,
+        username: user.username,
+        status: "request-to",
+      };
+      User.updateOne(user, { $push: { friends: request } }).catch((err) =>
+        console.log(err)
+      );
+      User.updateOne(
+        { username: req.user.username },
+        { $push: { friends: status } }
+      ).catch((err) => console.log(err));
+      res.redirect("/friends");
+    }
+  });
+});
+
+app.post("/accept", function (req, res) {
+    User.update(
+      {username: req.user.username, "friends.username": req.body.reqId },
+      {$set: {'friends.$.status': "friend"}}, function (err) {
+        console.log(err);
+      });
+    User.update(
+      {username: req.body.reqId, "friends.username": req.user.username},
+      {$set: {'friends.$.status': "friend"}}, function (err) {
+        console.log("dab");
+      }
+    );
+  res.redirect("/friends");
+});
+
+app.post("/decline", function (req, res) {
+  User.updateOne({username: req.user.username}, {$push: {friends: {username: req.body.reqId}}})
+    .catch((err) => console.log(err));
+  User.updateOne({username: req.body.reqId}, {$push: {friends: {username: req.user.username}}})
+    .catch((err) => console.log(err));
+})

@@ -28,7 +28,7 @@ a {
 }
 
 a:hover {
-    text-decoration: underline;
+    color:gray
 }
 
 /* Responsivity */
@@ -100,6 +100,7 @@ a:hover {
 }
 
 #mockup-img {
+    border: 1px solid black;
     max-width: 80%;
 }
 
@@ -165,12 +166,11 @@ button {
 
 .full-page {
     align-items: center;
-    background-size: 1440px;
     background-image: linear-gradient(to right, #6998AB, #B1D0E0);
-    overflow: scroll;
     background-repeat:repeat-y;
-    width: 1440px;
-    height: 100vh;
+    background-size: 100vw;
+    height: 120vh;
+    overflow: scroll;
 }
 
 .signout-button {
@@ -224,12 +224,19 @@ button {
 }
 
 .schedule-setwidth {
-    width: 1200px;
-    
+    width: 1200px;   
 }
 
 .schedule-header h1 {
     margin: 5px;
+}
+
+.schedule-header p {
+    bottom: -50px;
+    display: inline-block;
+    left: 0;
+    margin: 0;
+    position: absolute;
 }
 
 .schedule-header button {
@@ -320,9 +327,9 @@ thead th {
 }
 
 .delete {
-    color: red;
     border: 1px solid black;
     border-radius: 4px;
+    color: red;
 }
 
 .fullscreen {
@@ -383,4 +390,131 @@ thead th {
 
 .days {
     text-transform: capitalize;
+}
+
+/* Friends Page */
+
+.friends-page {
+    align-items: flex-start;
+    display: flex;
+    height: fit-content;
+    justify-content: right;
+    padding-top: 120px;
+}
+
+.add-friend {
+    text-align: left;
+}
+
+.friend-header {
+    background-color: #406882;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    margin: 0 auto;
+    padding: 1%;
+    width: 60%;
+}
+
+.friends-list {
+    background-color: white;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    line-height: 0.7rem;
+    margin: 0 auto;
+    text-align: left;
+    width: 62%;
+}
+
+.friend-entry:last-child, .request:last-child {
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+}
+
+.friend-entry {
+    border: 1px solid black;
+    padding: 3% 5%;
+}
+
+.friend-entry .a:hover {
+    color: darkgray;
+}
+
+.friend-form, .friend-requests {
+    border-radius: 16px;
+    margin-bottom: 6%;
+    width: 60%;
+}
+
+.friend-form {
+    background-color: white;
+    padding: 3%;
+    padding-top: 1%;
+    border: 1px solid black;
+}
+
+.friend-form h3 {
+    margin-bottom: 0;
+}
+
+.friend-form input {
+    font-family: 'Open Sans', sans-serif;
+    margin: 8px 0;
+    width: 60%;
+}
+
+.friend-form button {
+    font-family: 'Open Sans', sans-serif;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.request {
+    border: 1px solid black;
+    background-color: white;
+}
+
+.friend-requests h3 {
+    padding-left: 5%;
+}
+
+.friend-requests p {
+    padding: 0 0 0.6em 5%; 
+    margin-top: -0.7em;
+}
+
+#req-title {
+    padding-top: 6%;
+    padding-bottom: 6%;
+}
+
+.friend-requests {
+    background-color: #406882;
+}
+
+.friend-requests form {
+    display: inline-block;
+    margin: 0.2em -1% 1.1em 5%;
+}
+
+#accept-btn {
+    color: green;
+    border-color: green;
+}
+
+#decline-btn {
+    color: red;
+    border-color: red;
+}
+
+.friend-requests button {
+    border-radius: 6px;
+    padding: 3px 9px;
 }
