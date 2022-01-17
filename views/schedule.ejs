@@ -114,31 +114,31 @@
                 <br>
                 <div class="checkbox-day">
                     <label>Sun</label><br>
-                    <input type="checkbox" name="sunday" class="checkboxday" required onclick='deRequireCb("checkboxday")' oninvalid="this.setCustomValidity('Select at least one weekday')">
+                    <input type="checkbox" name="sunday" class="checkboxday">
                 </div>
                 <div class="checkbox-day">
                     <label>Mon</label><br>
-                    <input type="checkbox" name="monday" class="checkboxday" required onclick='deRequireCb("checkboxday")'>
+                    <input type="checkbox" name="monday" class="checkboxday"  >
                 </div>
                 <div class="checkbox-day">
                     <label>Tue</label><br>
-                    <input type="checkbox" name="tuesday" class="checkboxday" required onclick='deRequireCb("checkboxday")'>
+                    <input type="checkbox" name="tuesday" class="checkboxday"  >
                 </div>
                 <div class="checkbox-day">
                     <label>Wed</label><br>
-                    <input type="checkbox" name="wednesday" class="checkboxday" required onclick='deRequireCb("checkboxday")'>
+                    <input type="checkbox" name="wednesday" class="checkboxday"  >
                 </div>
                 <div class="checkbox-day">
                     <label>Thu</label><br>
-                    <input type="checkbox" name="thursday" class="checkboxday" required onclick='deRequireCb("checkboxday")'>
+                    <input type="checkbox" name="thursday" class="checkboxday"  >
                 </div>
                 <div class="checkbox-day">
                     <label>Fri</label><br>
-                    <input type="checkbox" name="friday" class="checkboxday" required onclick='deRequireCb("checkboxday")'>
+                    <input type="checkbox" name="friday" class="checkboxday"  >
                 </div>
                 <div class="checkbox-day">
                     <label>Sat</label><br>
-                    <input type="checkbox" name="saturday" class="checkboxday" required onclick='deRequireCb("checkboxday")'>
+                    <input type="checkbox" name="saturday" class="checkboxday"  >
                 </div><br>
                 <label>Room: </label>
                 <input type="text" name="room" placeholder="(optional)"><br>
@@ -182,31 +182,31 @@
                 <br>
                 <div class="edit-day">
                     <label>Sun</label><br>
-                    <input type="checkbox" name="sunday" class="editday" required onclick='deRequireCb("editday")' oninvalid="this.setCustomValidity('Select at least one weekday')">
+                    <input type="checkbox" name="sunday" class="editday" >
                 </div>
                 <div class="edit-day">
                     <label>Mon</label><br>
-                    <input type="checkbox" name="monday" class="editday" required onclick='deRequireCb("editday")'>
+                    <input type="checkbox" name="monday" class="editday"   >
                 </div>
                 <div class="edit-day">
                     <label>Tue</label><br>
-                    <input type="checkbox" name="tuesday" class="editday" required onclick='deRequireCb("editday")'>
+                    <input type="checkbox" name="tuesday" class="editday"   >
                 </div>
                 <div class="edit-day">
                     <label>Wed</label><br>
-                    <input type="checkbox" name="wednesday" class="editday" required onclick='deRequireCb("editday")'>
+                    <input type="checkbox" name="wednesday" class="editday"   >
                 </div>
                 <div class="edit-day">
                     <label>Thu</label><br>
-                    <input type="checkbox" name="thursday" class="editday" required onclick='deRequireCb("editday")'>
+                    <input type="checkbox" name="thursday" class="editday"   >
                 </div>
                 <div class="edit-day">
                     <label>Fri</label><br>
-                    <input type="checkbox" name="friday" class="editday" required onclick='deRequireCb("editday")'>
+                    <input type="checkbox" name="friday" class="editday"   >
                 </div>
                 <div class="edit-day">
                     <label>Sat</label><br>
-                    <input type="checkbox" name="saturday" class="editday" required onclick='deRequireCb("editday")'>
+                    <input type="checkbox" name="saturday" class="editday"   >
                 </div><br>
                 <label>Room: </label>
                 <input type="text" name="room" id="room" placeholder="(none)"><br>
@@ -328,16 +328,15 @@
                         oneChecked = true;
                     }
                 })
-
                 if (oneChecked) {
-                    boxes.forEach((element) => {
-                        element.required = false;
-                    })
+                    boxes[0].required = false;
+                    boxes[0].removeAttribute('oninvalid');
                 } else {
-                    boxes.forEach((element) => {
-                        element.required = true;
-                    })
+                    boxes[0].required = true;
+                    boxes[0].setAttribute('oninvalid', "this.setCustomValidity('Select at least one weekday')");
                 }
+                console.log(boxes[0].oninvalid);
+                //Warning persists
             }
 
         </script>
