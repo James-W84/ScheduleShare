@@ -108,9 +108,9 @@
                 <label>Class Name: </label>
                 <input type="text" name="className" required maxlength="60"><br>
                 <label>Start Time: </label>
-                <input type="time" name="startTime" required min="08:00" max="19:00"><br>
+                <input type="time" name="startTime" required min="08:00" max="19:00" step="600"><br>
                 <label>End Time: </label>
-                <input type="time" name="endTime" required min="08:00" max="19:00">
+                <input type="time" name="endTime" required min="08:00" max="19:00" step="600">
                 <br>
                 <div class="checkbox-day">
                     <label>Sun</label><br>
@@ -176,9 +176,9 @@
                 <label>Class Name: </label>
                 <input type="text" name="className" id="className" required><br>
                 <label>Start Time: </label>
-                <input type="time" name="startTime" id="startTime" required><br>
+                <input type="time" name="startTime" id="startTime" required in="08:00" max="19:00" step="600"><br>
                 <label>End Time: </label>
-                <input type="time" name="endTime" id="endTime" required>
+                <input type="time" name="endTime" id="endTime" required min="08:00" max="19:00" step="600">
                 <br>
                 <div class="edit-day">
                     <label>Sun</label><br>
