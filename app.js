@@ -308,9 +308,9 @@ app.post("/accept", function (req, res) {
 });
 
 app.post("/decline", function (req, res) {
-  User.updateOne({username: req.user.username}, {$push: {friends: {username: req.body.reqId}}})
+  User.updateOne({username: req.user.username}, {$pull: {friends: {username: req.body.reqId}}})
     .catch((err) => console.log(err));
-  User.updateOne({username: req.body.reqId}, {$push: {friends: {username: req.user.username}}})
+  User.updateOne({username: req.body.reqId}, {$pull: {friends: {username: req.user.username}}})
     .catch((err) => console.log(err));
   res.redirect("/friends");
 })
