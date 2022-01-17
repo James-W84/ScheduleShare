@@ -305,7 +305,7 @@ app.post("/accept", function (req, res) {
     { username: req.body.reqId, "friends.username": req.user.username },
     { $set: { "friends.$.status": "friend" } },
     function (err) {
-      console.log("dab");
+      console.log(err);
     }
   );
   res.redirect("/friends");
