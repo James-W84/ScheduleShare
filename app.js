@@ -312,4 +312,5 @@ app.post("/decline", function (req, res) {
     .catch((err) => console.log(err));
   User.updateOne({username: req.body.reqId}, {$push: {friends: {username: req.user.username}}})
     .catch((err) => console.log(err));
+  res.redirect("/friends");
 })
