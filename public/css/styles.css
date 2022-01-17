@@ -522,3 +522,7 @@ input[type=number] {
     border-radius: 6px;
     padding: 3px 9px;
 }
+
+.friends-page .flex-6 {
+    margin-bottom: 10%;
+}

@@ -9,6 +9,8 @@ const passportLocalMongoose = require("passport-local-mongoose");
 const findOrCreate = require("mongoose-findorcreate");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const { redirect } = require("express/lib/response");
+const e = require("express");
+const flash = require("connect-flash");
 
 const app = express();
 app.use(express.static("public"));
@@ -21,6 +23,7 @@ app.use(
     saveUninitialized: false,
   })
 );
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -266,31 +269,40 @@ app.get("/friends", function (req, res) {
 });
 
 app.post("/add-friend", function (req, res) {
-  User.findOne({ username: req.body.friendId }, function (err, user) {
-    if (err) {
-      console.log(err);
-      res.redirect("/friends");
-    } else {
-      let request = {
-        name: req.user.name,
-        username: req.user.username,
-        status: "request-from",
-      };
-      let status = {
-        name: user.name,
-        username: user.username,
-        status: "request-to",
-      };
-      User.updateOne(user, { $push: { friends: request } }).catch((err) =>
-        console.log(err)
-      );
-      User.updateOne(
-        { username: req.user.username },
-        { $push: { friends: status } }
-      ).catch((err) => console.log(err));
+  let redirected = false;
+  req.user.friends.forEach((element) => {
+    if (element.username === req.body.friendId) {
+      redirected = true;
       res.redirect("/friends");
     }
   });
+  if (!redirected) {
+    User.findOne({ username: req.body.friendId }, function (err, user) {
+      if (err) {
+        console.log(err);
+        res.redirect("/friends");
+      } else {
+        let request = {
+          name: req.user.name,
+          username: req.user.username,
+          status: "request-from",
+        };
+        let status = {
+          name: user.name,
+          username: user.username,
+          status: "request-to",
+        };
+        User.updateOne(user, { $push: { friends: request } }).catch((err) =>
+          console.log(err)
+        );
+        User.updateOne(
+          { username: req.user.username },
+          { $push: { friends: status } }
+        ).catch((err) => console.log(err));
+        res.redirect("/friends");
+      }
+    });
+  }
 });
 
 app.post("/accept", function (req, res) {
@@ -314,11 +326,13 @@ app.post("/accept", function (req, res) {
 app.post("/decline", function (req, res) {
   User.updateOne(
     { username: req.user.username },
-    { $pull: { friends: { username: req.body.reqId } } }
+    { $pull: { friends: { username: req.body.reqId, status: "request-from" } } }
   ).catch((err) => console.log(err));
   User.updateOne(
     { username: req.body.reqId },
-    { $pull: { friends: { username: req.user.username } } }
+    {
+      $pull: { friends: { username: req.user.username, status: "request-to" } },
+    }
   ).catch((err) => console.log(err));
   res.redirect("/friends");
 });
