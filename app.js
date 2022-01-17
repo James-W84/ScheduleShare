@@ -136,7 +136,7 @@ app.get("/dashboard", function (req, res) {
     let colors = [];
     const numClasses = req.user.classes.length;
     generateColors(numClasses, colors);
-    res.render("schedule", { user: req.user, colors: colors });
+    res.render("schedule", { user: req.user, colors: colors, viewOnly: false });
   } else {
     res.redirect("/auth/google");
   }
@@ -340,7 +340,7 @@ app.get("/profile", function (req, res) {
         user = user[0];
         const numClasses = user.classes.length;
         generateColors(numClasses, colors);
-        res.render("schedule", { user: user, colors: colors });
+        res.render("schedule", { user: user, colors: colors, viewOnly: true });
       }
     });
   } else {

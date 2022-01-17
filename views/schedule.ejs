@@ -12,7 +12,11 @@
                 <%=user.name%>'s Schedule
             </h1>
             <p>User ID: <%=user.username%></p>
-            <button class="add-course-btn">+</button>
+            <%if (viewOnly) {%>
+            <button class="add-course-btn hidden">+</button>
+            <%} else {%>
+            <button class="add-course-btn ">+</button>
+            <%}%>
         </div>
         <div class="schedule schedule-setwidth">
             <table class="schedule schedule-setwidth">
@@ -110,31 +114,31 @@
                 <br>
                 <div class="checkbox-day">
                     <label>Sun</label><br>
-                    <input type="checkbox" name="sunday" class="checkbox-day" required onclick="deRequireCb(checkbox-day)" oninvalid="this.setCustomValidity('Select at least one weekday')">
+                    <input type="checkbox" name="sunday" class="checkboxday" required onclick='deRequireCb("checkboxday")' oninvalid="this.setCustomValidity('Select at least one weekday')">
                 </div>
                 <div class="checkbox-day">
                     <label>Mon</label><br>
-                    <input type="checkbox" name="monday" class="checkbox-day" required onclick="deRequireCb(checkbox-day)">
+                    <input type="checkbox" name="monday" class="checkboxday" required onclick='deRequireCb("checkboxday")'>
                 </div>
                 <div class="checkbox-day">
                     <label>Tue</label><br>
-                    <input type="checkbox" name="tuesday" class="checkbox-day" required onclick="deRequireCb(checkbox-day)">
+                    <input type="checkbox" name="tuesday" class="checkboxday" required onclick='deRequireCb("checkboxday")'>
                 </div>
                 <div class="checkbox-day">
                     <label>Wed</label><br>
-                    <input type="checkbox" name="wednesday" class="checkbox-day" required onclick="deRequireCb(checkbox-day)">
+                    <input type="checkbox" name="wednesday" class="checkboxday" required onclick='deRequireCb("checkboxday")'>
                 </div>
                 <div class="checkbox-day">
                     <label>Thu</label><br>
-                    <input type="checkbox" name="thursday" class="checkbox-day" required onclick="deRequireCb(checkbox-day)">
+                    <input type="checkbox" name="thursday" class="checkboxday" required onclick='deRequireCb("checkboxday")'>
                 </div>
                 <div class="checkbox-day">
                     <label>Fri</label><br>
-                    <input type="checkbox" name="friday" class="checkbox-day" required onclick="deRequireCb(checkbox-day)">
+                    <input type="checkbox" name="friday" class="checkboxday" required onclick='deRequireCb("checkboxday")'>
                 </div>
                 <div class="checkbox-day">
-                    <label id="st">Sat</label><br>
-                    <input type="checkbox" name="saturday" class="checkbox-day" required onclick="deRequireCb(checkbox-day)">
+                    <label>Sat</label><br>
+                    <input type="checkbox" name="saturday" class="checkboxday" required onclick='deRequireCb("checkboxday")'>
                 </div><br>
                 <label>Room: </label>
                 <input type="text" name="room" placeholder="(optional)"><br>
@@ -145,7 +149,11 @@
         </div>
         <div class="hover edit-class hidden">
             <p>x</p>
-            <i class="fas fa-edit"></i>
+            <%if (viewOnly) {%>
+                <i class="fas fa-edit hidden"></i>
+            <%}else{%>
+                <i class="fas fa-edit"></i>
+            <%}%> 
             <h2></h2>
             <p class="days"></p>
             <p class="time"></p>
@@ -153,10 +161,12 @@
             <p class="prof"></p>
             <p class="hidden start-time"></p>
             <p class="hidden end-time"></p>
-            <form method="post" action="/delete">
-                <input type="text" class="hidden" name="className" id="className">
-                <button type="submit" class="delete">Delete Class</button>
-            </form>
+            <%if (!viewOnly) {%>
+                <form method="post" action="/delete">
+                    <input type="text" class="hidden" name="className" id="className">
+                    <button type="submit" class="delete">Delete Class</button>
+                </form>
+            <%}%>
         </div>
         <div class="hover editor hidden">
             <h2>Edit Class</h2>
@@ -172,31 +182,31 @@
                 <br>
                 <div class="edit-day">
                     <label>Sun</label><br>
-                    <input type="checkbox" name="sunday" class="edit-day" required onclick="deRequireCb(edit-day)" oninvalid="this.setCustomValidity('Select at least one weekday')">
+                    <input type="checkbox" name="sunday" class="editday" required onclick='deRequireCb("editday")' oninvalid="this.setCustomValidity('Select at least one weekday')">
                 </div>
                 <div class="edit-day">
                     <label>Mon</label><br>
-                    <input type="checkbox" name="monday" class="edit-day" required onclick="deRequireCb(edit-day)">
+                    <input type="checkbox" name="monday" class="editday" required onclick='deRequireCb("editday")'>
                 </div>
                 <div class="edit-day">
                     <label>Tue</label><br>
-                    <input type="checkbox" name="tuesday" class="edit-day" required onclick="deRequireCb(edit-day)">
+                    <input type="checkbox" name="tuesday" class="editday" required onclick='deRequireCb("editday")'>
                 </div>
                 <div class="edit-day">
                     <label>Wed</label><br>
-                    <input type="checkbox" name="wednesday" class="edit-day" required onclick="deRequireCb(edit-day)">
+                    <input type="checkbox" name="wednesday" class="editday" required onclick='deRequireCb("editday")'>
                 </div>
                 <div class="edit-day">
                     <label>Thu</label><br>
-                    <input type="checkbox" name="thursday" class="edit-day" required onclick="deRequireCb(edit-day)">
+                    <input type="checkbox" name="thursday" class="editday" required onclick='deRequireCb("editday")'>
                 </div>
                 <div class="edit-day">
                     <label>Fri</label><br>
-                    <input type="checkbox" name="friday" class="edit-day" required onclick="deRequireCb(edit-day)">
+                    <input type="checkbox" name="friday" class="editday" required onclick='deRequireCb("editday")'>
                 </div>
                 <div class="edit-day">
-                    <label id="st">Sat</label><br>
-                    <input type="checkbox" name="saturday" class="edit-day" required onclick="deRequireCb(edit-day)">
+                    <label>Sat</label><br>
+                    <input type="checkbox" name="saturday" class="editday" required onclick='deRequireCb("editday")'>
                 </div><br>
                 <label>Room: </label>
                 <input type="text" name="room" id="room" placeholder="(none)"><br>
@@ -311,10 +321,12 @@
 
             // Require at least one checkbox
             function deRequireCb(boxClass) {
-                let boxes = document.getElementsByClassName(boxClass);
+                let boxes = Array.prototype.slice.call(document.getElementsByClassName(boxClass));
                 let oneChecked = false;
                 boxes.forEach((element) => {
-                    if (element.checked) oneChecked = true;
+                    if (element.checked) {
+                        oneChecked = true;
+                    }
                 })
 
                 if (oneChecked) {
