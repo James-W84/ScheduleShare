@@ -435,8 +435,12 @@ thead th {
     padding: 3% 5%;
 }
 
-.friend-entry .a:hover {
-    color: darkgray;
+.friend-entry a {
+    color: black;
+}
+
+.friend-entry a:hover {
+    color: darkblue;
 }
 
 .friend-form, .friend-requests {

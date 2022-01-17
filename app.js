@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const url = require("url");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
 const session = require("express-session");
@@ -293,24 +294,56 @@ app.post("/add-friend", function (req, res) {
 });
 
 app.post("/accept", function (req, res) {
-    User.update(
-      {username: req.user.username, "friends.username": req.body.reqId },
-      {$set: {'friends.$.status': "friend"}}, function (err) {
-        console.log(err);
-      });
-    User.update(
-      {username: req.body.reqId, "friends.username": req.user.username},
-      {$set: {'friends.$.status': "friend"}}, function (err) {
-        console.log("dab");
-      }
-    );
+  User.update(
+    { username: req.user.username, "friends.username": req.body.reqId },
+    { $set: { "friends.$.status": "friend" } },
+    function (err) {
+      console.log(err);
+    }
+  );
+  User.update(
+    { username: req.body.reqId, "friends.username": req.user.username },
+    { $set: { "friends.$.status": "friend" } },
+    function (err) {
+      console.log("dab");
+    }
+  );
   res.redirect("/friends");
 });
 
 app.post("/decline", function (req, res) {
-  User.updateOne({username: req.user.username}, {$pull: {friends: {username: req.body.reqId}}})
-    .catch((err) => console.log(err));
-  User.updateOne({username: req.body.reqId}, {$pull: {friends: {username: req.user.username}}})
-    .catch((err) => console.log(err));
+  User.updateOne(
+    { username: req.user.username },
+    { $pull: { friends: { username: req.body.reqId } } }
+  ).catch((err) => console.log(err));
+  User.updateOne(
+    { username: req.body.reqId },
+    { $pull: { friends: { username: req.user.username } } }
+  ).catch((err) => console.log(err));
   res.redirect("/friends");
-})
+});
+
+app.get("/profile", function (req, res) {
+  let isFriend = false;
+  const queryObject = url.parse(req.url, true).query;
+  req.user.friends.forEach((element) => {
+    if (element.username === queryObject.user) {
+      isFriend = true;
+    }
+  });
+  if (isFriend) {
+    let colors = [];
+    User.find({ username: queryObject.user }, function (err, user) {
+      if (err) {
+        console.log(err);
+      } else {
+        user = user[0];
+        const numClasses = user.classes.length;
+        generateColors(numClasses, colors);
+        res.render("schedule", { user: user, colors: colors });
+      }
+    });
+  } else {
+    res.redirect("/");
+  }
+});
