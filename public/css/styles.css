@@ -169,8 +169,8 @@ button {
     background-image: linear-gradient(to right, #6998AB, #B1D0E0);
     background-repeat:repeat-y;
     background-size: 140vw;
-    overflow: hidden;
     height: 120vh;
+    overflow: hidden;
     overflow: scroll;
 }
 
@@ -549,11 +549,13 @@ input[type=number] {
     background-color: white;
     border: 1px solid black;
     border-radius: 7px;
-    padding: 10px;
+    left: 1215px;
+    padding: 15px 25px;
     position: absolute;
-    right: -180px;
     top: 0;
-    width: 140px;
+    width: fit-content;
+    
+
 }
 
 .group-toggle h4 {
@@ -561,8 +563,13 @@ input[type=number] {
     margin: 10px 0;
 }
 
+.toggle {
+    text-align: left;
+}
+
 .toggle-box {
     border: 1px solid rgba(0, 0, 0, 1);
+    
     border-radius: 3px;
     cursor: pointer;
     display: inline-block;
