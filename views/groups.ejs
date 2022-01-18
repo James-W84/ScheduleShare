@@ -1,0 +1,46 @@
+<%- include('partials/header') %>
+
+    <body class="full-page groups-page">
+        <div class="schedule-menubar menubar">
+            <a class="menu-item" href="/dashboard">Dashboard</a>
+            <a class="menu-item" href="/friends">Friends</a>
+            <a class="menu-item" href="/groups">Groups</a>
+        </div>
+        <a href="/logout" class="signout-button"><i class="fas fa-sign-out-alt"></i></a>
+        <div class="flex-6">
+            <div class="groups-header">
+                <h2>Groups:</h2>
+            </div>
+            <div class="groups-list">
+                <%if (groups.length === 0) {%>
+                    <div class="group-entry">
+                        <h3>You have no groups.</h3>
+                        <p> Request to join a group or create one yourself!</p>
+                    </div>
+                <%}else{%>
+                    <%groups.forEach((element) => {%>
+                        <div class="group-entry">
+                            <a href="/group?id=<%=element.groupId%>"><h3><%=element.groupName%></h3></a>
+                            <p>Group ID: <%=element.groupId%></p>
+                        </div>
+                    <%})}%>
+            </div>
+        </div>
+        <div class="flex-6 add-group">
+            <div class="group-form">
+                <h3>Request to Join Group:</h3>
+                <form action="/request-join" method="post">
+                    <input type="text" name="groupId" placeholder="Group ID" required><br>
+                    <button type="submit">Send Request</button>
+                </form>
+            </div>
+            <div class="group-form">
+                <h3 id="newgroup-title">Create New Group</h3>
+                <form action="/create-group" method="post">
+                    <input type="text" name="groupName" placeholder="Group Name" required><br>
+                    <button type="submit">Create</button>
+                </form>
+            </div>
+        </div>
+
+        <%- include('partials/footer') %>

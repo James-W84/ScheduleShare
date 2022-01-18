@@ -4,8 +4,9 @@
         <div class="schedule-menubar menubar">
             <a class="menu-item" href="/dashboard">Dashboard</a>
             <a class="menu-item" href="/friends">Friends</a>
-            <a class="menu-item">Groups</a>
+            <a class="menu-item" href="/groups">Groups</a>
         </div>
+        <a href="/logout" class="signout-button"><i class="fas fa-sign-out-alt"></i></a>
         <div class="flex-6">
             <div class="friend-header">
                 <h2>Friends:</h2>
@@ -14,15 +15,14 @@
             <%if (friends.length===0) {%>
                 
                     <div class="friend-entry">
-                            <h3>You have no friends!</h3>
+                            <h3>You have no friends.</h3>
                         <p> Add some new friends here!</p>
                     </div>
                 
                 <%} else {%>
                     <%friends.forEach((element)=> {%>
-                        
                             <div class="friend-entry">
-                                <a href="/profile?user=<%=element.username%>" data-id="foo"><h3><%=element.name%></h3></a>
+                                <a href="/profile?user=<%=element.username%>"><h3><%=element.name%></h3></a>
                                 <p>User ID: <%=element.username%></p>
                             </div>
                      <%})}%>

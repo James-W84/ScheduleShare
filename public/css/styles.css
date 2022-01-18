@@ -273,15 +273,19 @@ thead th {
     padding: 5px 20px;
 }
 
-.add-course-btn {
+.add-course-btn, .admin-btn {
     background-color: #1A374D;
     border: 0;
     border-radius: 10px;
     color: white;
     cursor: pointer;
-    font-size: 2rem;
     font-weight: bold;
     height: 40px;
+    
+}
+
+.add-course-btn {
+    font-size: 2rem;
     width: 40px;
 }
 
@@ -341,9 +345,7 @@ thead th {
     z-index: 1;
 }
 
-.hidden {
-    display: none;
-}
+
 
 /* Class Schedule Blocks */
 .schedule-block { 
@@ -394,7 +396,7 @@ thead th {
 
 /* Friends Page */
 
-.friends-page {
+.friends-page, .groups-page {
     align-items: flex-start;
     display: flex;
     height: fit-content;
@@ -402,11 +404,11 @@ thead th {
     padding-top: 120px;
 }
 
-.add-friend {
+.add-friend, .add-group {
     text-align: left;
 }
 
-.friend-header {
+.friend-header, .groups-header {
     background-color: #406882;
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
@@ -415,7 +417,7 @@ thead th {
     width: 60%;
 }
 
-.friends-list {
+.friends-list, .groups-list {
     background-color: white;
     border-bottom-left-radius: 16px;
     border-bottom-right-radius: 16px;
@@ -425,48 +427,48 @@ thead th {
     width: 62%;
 }
 
-.friend-entry:last-child, .request:last-child {
+.friend-entry:last-child, .request:last-child, .group-entry:last-child {
     border-bottom-left-radius: 16px;
     border-bottom-right-radius: 16px;
 }
 
-.friend-entry {
+.friend-entry, .group-entry {
     border: 1px solid black;
     padding: 3% 5%;
 }
 
-.friend-entry a {
+.friend-entry a, .group-entry a {
     color: black;
 }
 
-.friend-entry a:hover {
+.friend-entry a:hover, .group-entry a:hover {
     color: darkblue;
 }
 
-.friend-form, .friend-requests {
+.friend-form, .friend-requests, .group-form, .new-group {
     border-radius: 16px;
     margin-bottom: 6%;
     width: 60%;
 }
 
-.friend-form {
+.friend-form, .group-form {
     background-color: white;
+    border: 1px solid black;
     padding: 3%;
     padding-top: 1%;
-    border: 1px solid black;
 }
 
-.friend-form h3 {
+.friend-form h3, .group-form h3 {
     margin-bottom: 0;
 }
 
-.friend-form input {
+.friend-form input, .group-form input {
     font-family: 'Open Sans', sans-serif;
     margin: 8px 0;
     width: 60%;
 }
 
-.friend-form button {
+.friend-form button, .group-form button {
     font-family: 'Open Sans', sans-serif;
 }
 
@@ -481,48 +483,127 @@ input[type=number] {
 }
 
 .request {
-    border: 1px solid black;
     background-color: white;
+    border: 1px solid black;
 }
 
-.friend-requests h3 {
+.friend-requests h3, .new-group h3 {
     padding-left: 5%;
 }
 
-.friend-requests p {
-    padding: 0 0 0.6em 5%; 
+.friend-requests p, .new-group p { 
     margin-top: -0.7em;
+    padding: 0 0 0.6em 5%;
 }
 
 #req-title {
-    padding-top: 6%;
     padding-bottom: 6%;
+    padding-top: 6%;
 }
 
 .friend-requests {
     background-color: #406882;
 }
 
-.friend-requests form {
+.friend-requests form, .new-group form {
     display: inline-block;
     margin: 0.2em -1% 1.1em 5%;
 }
 
 #accept-btn {
-    color: green;
     border-color: green;
+    color: green;
 }
 
 #decline-btn {
-    color: red;
     border-color: red;
+    color: red;
 }
 
-.friend-requests button {
+.friend-requests button, .new-group button {
     border-radius: 6px;
     padding: 3px 9px;
 }
 
-.friends-page .flex-6 {
+.friends-page .flex-6, .groups-page .flex-6 {
     margin-bottom: 10%;
+}
+
+/* Groups Page */ 
+.new-group {
+    background-color: white;
+    border: 1px solid black;
+}
+
+.admin-btn {
+    font-size: 1rem;
+    padding: 10px;
+}
+
+.groupschedule .schedule-block {
+    opacity: 40%;
+}
+
+.group-toggle {
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 7px;
+    padding: 10px;
+    position: absolute;
+    right: -180px;
+    top: 0;
+    width: 140px;
+}
+
+.group-toggle h4 {
+    font-size: 1.15rem;
+    margin: 10px 0;
+}
+
+.toggle-box {
+    border: 1px solid rgba(0, 0, 0, 1);
+    border-radius: 3px;
+    cursor: pointer;
+    display: inline-block;
+    height: 15px;
+    position: relative;
+    right: 6px;
+    top: 4px;
+    width: 15px;
+}
+
+.group-toggle p:not(.hidden) {
+    display: inline-block;
+    margin: 10px 0;
+}
+
+.hidden {
+    display: none;
+}
+
+.join-req {
+    text-align: left;
+    
+}
+
+.join-req:not(:last-child) {
+    border-bottom: 1px solid black;
+    padding-bottom: 15px;;
+}
+
+.join-req h3 {
+    margin-bottom: 0;
+    margin-top: 12px;
+}
+
+.join-req p {
+    margin: 0 auto;
+}
+
+.join-req form {
+    display: inline-block;
+}
+
+.join-req button {
+    margin-right: 10px;
 }

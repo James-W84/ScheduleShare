@@ -1,0 +1,224 @@
+<%- include('partials/header') %>
+
+    <body class="full-page">
+        <div class="schedule-menubar menubar">
+            <a class="menu-item" href="/dashboard">Dashboard</a>
+            <a class="menu-item" href="/friends">Friends</a>
+            <a class="menu-item" href="/groups">Groups</a>
+        </div>
+        <a href="/logout" class="signout-button"><i class="fas fa-sign-out-alt"></i></a>
+        <div class="schedule-header schedule-setwidth">
+            <h1>
+                Group Schedule: <%=group.name%>
+            </h1>
+            <p>Group ID: <%=group._id%>
+            </p>
+            <%if (!isAdmin) {%>
+                <button class="admin-btn hidden">Admin</button>
+                <%} else {%>
+                    <button class="admin-btn ">Admin</button>
+                    <%}%>
+        </div>
+        <div class="schedule schedule-setwidth groupschedule">
+            <table class="schedule schedule-setwidth">
+                <thead>
+                    <th></th>
+                    <th scope="col">Monday</th>
+                    <th scope="col">Tuesday</th>
+                    <th scope="col">Wednesday</th>
+                    <th scope="col">Thursday</th>
+                    <th scope="col">Friday</th>
+                    <th scope="col">Saturday</th>
+                    <th scope="col">Sunday</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>8:00 AM</td>
+                        <td rowspan="12"></td>
+                        <td rowspan="12"></td>
+                        <td rowspan="12"></td>
+                        <td rowspan="12"></td>
+                        <td rowspan="12"></td>
+                        <td rowspan="12"></td>
+                        <td rowspan="12"></td>
+
+                    </tr>
+                    <tr>
+                        <td>9:00 AM</td>
+                    </tr>
+                    <tr>
+                        <td>10:00 AM</td>
+                    </tr>
+                    <tr>
+                        <td>11:00 AM</td>
+                    </tr>
+                    <tr>
+                        <td>12:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td>1:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td>2:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td>3:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td>4:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td>5:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td>6:00 PM</td>
+                    </tr>
+                    <tr>
+                </tbody>
+            </table>
+            <% members.forEach((member, index)=> {%>
+                <% member.classes.forEach((element)=> {%>
+                    <% element.days.forEach((el)=> {%>
+                        <div class="schedule-block <%=el%> id<%=member.username%>"
+                            style="height:<%=(element.numEndTime - element.numStartTime)/60 * 52%>px; top:<%=28 + (element.numStartTime - 480)/60*52%>px; background-color:rgba(<%=colors[index]%>, 0.4);">
+                            <p>
+                                <%=element.className%>
+                            </p>
+                            <p class="hidden username">
+                                <%=member.username%>
+                            </p>
+                            <p class="hidden days">
+                                <%=element.days%>
+                            </p>
+                            <p class="hidden startTime">
+                                <%=element.startTime%>
+                            </p>
+                            <p class="hidden endTime">
+                                <%=element.endTime%>
+                            </p>
+                            <p class="hidden room">
+                                <%=element.room%>
+                            </p>
+                            <p class="hidden prof">
+                                <%=element.prof%>
+                            </p>
+                        </div>
+                    <%})%>
+                <%})%>
+            <%});%>
+            <div class="group-toggle">
+                <h4>Group Members:</h4>
+                <%members.forEach((element, index) => {%>
+                    <div class="toggle">
+                        <div class="toggle-box" style="background-color:rgba(<%=colors[index]%>, 0.4); border-color:rgba(<%=colors[index]%>, 0.4);"></div>
+                            <p><%=element.name%></p>
+                            <p class="hidden"><%=element.username%></p>
+                            <p class="hidden bgcolor"><%=colors[index]%></p>
+                    </div>
+                <%})%>
+            </div>
+        </div>
+        <div class="hover edit-class hidden">
+            <p>x</p>
+            <h2></h2>
+            <p class="days"></p>
+            <p class="time"></p>
+            <p class="room"></p>
+            <p class="prof"></p>
+            <p class="hidden start-time"></p>
+            <p class="hidden end-time"></p>
+        </div>
+        <div class="hover admin-panel hidden">
+            <p>x</p>
+            <h2>Join Requests:</h2>
+            
+                <%group.joinRequests.forEach((element) => {%>
+                    <div class="join-req">
+                    <h3><%=element.name%></h3>
+                    <p>ID: <%=element.id%></p>
+                    <form action="/accept-join" method="post">
+                        <input type="text" class="hidden" name="name" value=<%=element.name%>>
+                        <input type="text" class="hidden" name="reqId" value=<%=element.id%>>
+                        <input type="text" class="hidden" name="groupName" value=<%=group.name%>>
+                        <input type="text" class="hidden" name="groupId" value=<%=group._id%>>
+                        <button type="submit" id="accept-btn">Accept</button>
+                    </form>
+                    <form action="/decline-join" method="post">
+                        <input type="text" class="hidden" name="name" value=<%=element.name%>>
+                        <input type="text" class="hidden" name="reqId" value=<%=element.id%>>
+                        <input type="text" class="hidden" name="groupName" value=<%=group.name%>>
+                        <input type="text" class="hidden" name="groupId" value=<%=group._id%>>
+                        <button type="submit" id="decline-btn">Decline</button>
+                    </form>
+                    </div>
+                <%})%>
+        </div>
+        <div class="fullscreen hidden"></div>
+        <script>
+            document.querySelector('.fullscreen').addEventListener('click', function () {
+                document.querySelector('.hover.edit-class').classList.add('hidden');
+                document.querySelector(".admin-panel").classList.add("hidden");
+                document.querySelector('.fullscreen').classList.add('hidden');
+            })
+
+            document.querySelectorAll(".schedule-block").forEach((element) => {
+                element.addEventListener("click", function () {
+                    const editPanel = document.querySelector('.hover.edit-class');
+                    editPanel.classList.remove('hidden');
+                    document.querySelector('.fullscreen').classList.remove('hidden');
+                    console.log(element);
+                    editPanel.querySelector('h2').innerHTML = element.querySelector('p').innerHTML;
+                    editPanel.querySelector('.time').innerHTML = `Time: ${element.querySelector('.startTime').innerHTML} - ${element.querySelector('.endTime').innerHTML}`
+                    editPanel.querySelector('.days').innerHTML = "Days: " + element.querySelector('.days').innerHTML.replace(new RegExp(',', 'g'), ', ');
+
+                    if (element.querySelector('.room').innerHTML.trim().length > 0) {
+                        editPanel.querySelector('.room').innerHTML = "Room: " + element.querySelector('.room').innerHTML;
+                    }
+                    else {
+                        editPanel.querySelector('.room').innerHTML = "Room: Unspecified";
+                    }
+                    if (element.querySelector('.prof').innerHTML.trim().length > 0) {
+                        editPanel.querySelector('.prof').innerHTML = "Instructor: " + element.querySelector('.prof').innerHTML;
+                    }
+                    else {
+                        editPanel.querySelector('.prof').innerHTML = "Instructor: Unspecified";
+                    }
+                    editPanel.querySelector(".hidden.start-time").innerHTML = element.querySelector('.startTime').innerHTML;
+                    editPanel.querySelector(".hidden.end-time").innerHTML = element.querySelector('.endTime').innerHTML;
+                });
+            })
+
+            document.querySelector(".admin-btn").addEventListener("click", function() {
+                document.querySelector(".admin-panel").classList.remove("hidden");
+                document.querySelector('.fullscreen').classList.remove('hidden');
+            })
+
+            document.querySelector('.edit-class p:first-child').addEventListener("click", function () {
+                document.querySelector('.hover.edit-class').classList.add('hidden');
+                document.querySelector('.fullscreen').classList.add('hidden');
+            })
+
+            document.querySelector('.admin-panel p:first-child').addEventListener("click", function () {
+                document.querySelector('.hover.admin-panel').classList.add('hidden');
+                document.querySelector('.fullscreen').classList.add('hidden');
+            })
+
+            // Toggle
+            document.querySelectorAll(".toggle-box").forEach((element) => {
+                element.addEventListener('click', function() {                
+                let id = element.parentElement.querySelector(".hidden").innerHTML;
+                let color = element.parentElement.querySelector(".hidden.bgcolor").innerHTML;
+                document.querySelectorAll(`.id${id}`).forEach((el) => {
+                    if (el.classList.contains("hidden")) {
+                        el.classList.remove("hidden");
+                        element.style.backgroundColor = `rgba(${color}, 0.4)`;
+                    }
+                    else {
+                        el.classList.add("hidden");
+                        element.style.backgroundColor = "transparent";
+                    }
+                })
+            })
+            })
+        </script>
+        <%- include('partials/footer') %>

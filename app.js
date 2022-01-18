@@ -10,7 +10,7 @@ const findOrCreate = require("mongoose-findorcreate");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const { redirect } = require("express/lib/response");
 const e = require("express");
-const flash = require("connect-flash");
+const { join } = require("path");
 
 const app = express();
 app.use(express.static("public"));
@@ -23,7 +23,6 @@ app.use(
     saveUninitialized: false,
   })
 );
-app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -48,6 +47,16 @@ const userSchema = new mongoose.Schema({
   classes: Array,
 });
 
+const groupSchema = new mongoose.Schema({
+  admin: {
+    id: { type: String, required: true },
+    name: { type: String, required: true },
+  },
+  name: String,
+  members: Array,
+  joinRequests: Array,
+});
+
 // const classSchema = new mongoose.Schema({
 //   name: { type: String, required: true },
 //   startTime: { type: Number, required: true },
@@ -61,6 +70,7 @@ userSchema.plugin(passportLocalMongoose);
 userSchema.plugin(findOrCreate);
 
 const User = new mongoose.model("User", userSchema);
+const Group = new mongoose.model("Group", groupSchema);
 // const Class = new mongoose.model("Class", classSchema);
 
 passport.use(User.createStrategy());
@@ -338,26 +348,165 @@ app.post("/decline", function (req, res) {
 });
 
 app.get("/profile", function (req, res) {
-  let isFriend = false;
-  const queryObject = url.parse(req.url, true).query;
-  req.user.friends.forEach((element) => {
-    if (element.username === queryObject.user) {
-      isFriend = true;
-    }
-  });
-  if (isFriend) {
-    let colors = [];
-    User.find({ username: queryObject.user }, function (err, user) {
-      if (err) {
-        console.log(err);
-      } else {
-        user = user[0];
-        const numClasses = user.classes.length;
-        generateColors(numClasses, colors);
-        res.render("schedule", { user: user, colors: colors, viewOnly: true });
+  if (req.isAuthenticated()) {
+    let isFriend = false;
+    const queryObject = url.parse(req.url, true).query;
+    req.user.friends.forEach((element) => {
+      if (element.username === queryObject.user) {
+        isFriend = true;
       }
     });
+    if (isFriend) {
+      let colors = [];
+      User.findOne({ username: queryObject.user }, function (err, user) {
+        if (err) {
+          console.log(err);
+        } else {
+          const numClasses = user.classes.length;
+          generateColors(numClasses, colors);
+          res.render("schedule", {
+            user: user,
+            colors: colors,
+            viewOnly: true,
+          });
+        }
+      });
+    } else {
+      res.redirect("/dashboard");
+    }
   } else {
-    res.redirect("/");
+    res.redirect("/auth/google");
   }
 });
+
+app.get("/groups", function (req, res) {
+  const userGroups = req.user.groups;
+  res.render("groups", { groups: userGroups });
+});
+
+app.post("/create-group", function (req, res) {
+  let newGroup = new Group({
+    admin: {
+      id: req.user.username,
+      name: req.user.name,
+    },
+    name: req.body.groupName,
+  });
+  newGroup.save(function (err, group) {
+    if (err) console.log(err);
+    else {
+      console.log(group);
+      User.update(
+        { username: req.user.username },
+        { $push: { groups: { groupId: group._id.toHexString(), groupName: group.name } } }
+      )
+        .then((result) => {
+          console.log(result);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  });
+  res.redirect("/groups");
+});
+
+app.post("/request-join", function (req, res) {
+  let redirect = false;
+  req.user.groups.forEach((element) => {
+    if (element.groupId === req.body.groupId) {
+      res.redirect("/groups");
+      redirect = true;
+    }
+  });
+  Group.findOne({ _id: req.body.groupId }, function (err, group) {
+    if (err) {
+      console.log(err);
+      res.redirect("/groups");
+    } else {
+      group.joinRequests.forEach((element) => {
+        if ((element.id = req.user.username)) {
+          res.redirect("/groups");
+          redirect = true;
+        }
+      });
+      if (!redirect) {
+        Group.updateOne(group, {
+          $push: {
+            joinRequests: { name: req.user.name, id: req.user.username },
+          },
+        }).catch((err) => console.log(err));
+        console.log(group);
+        res.redirect("/groups");
+      }
+    }
+  });
+});
+
+app.get("/group", function (req, res) {
+  if (req.isAuthenticated()) {
+    let isInGroup = false;
+    const queryObject = url.parse(req.url, true).query;
+    req.user.groups.forEach((element) => {
+      if (element.groupId === queryObject.id) isInGroup = true;
+    });
+    if (isInGroup) {
+      Group.findOne({ _id: queryObject.id }, function (err, group) {
+        if (err) console.log(err);
+        else {
+          let isAdmin = req.user.username === group.admin.id;
+          let groupMembers = [];
+          User.findOne({ username: group.admin.id }, function (err, user) {
+            if (err) console.log(err);
+            else {
+              groupMembers.push(user);
+              let memberIds = [];
+              group.members.forEach((element) => {
+                memberIds.push(element.id);
+              });
+              User.find(
+                { username: { $in: memberIds } },
+                function (err, result) {
+                  if (err) console.log(err);
+                  else {
+                    groupMembers = groupMembers.concat(result);
+                    colors = [];
+                    const numMembers = groupMembers.length;
+                    generateColors(numMembers, colors);
+                    res.render("group", {
+                      group: group,
+                      members: groupMembers,
+                      isAdmin: isAdmin,
+                      colors: colors,
+                    });
+                  }
+                }
+              );
+            }
+          });
+        }
+      });
+    } else {
+      res.redirect("/groups");
+    }
+  } else {
+    res.redirect("/auth/google");
+  }
+});
+
+app.post("/accept-join", function (req, res) {
+  Group.updateOne({ _id: req.body.groupId },
+  {$push: {members: {name: req.body.name, id: req.body.reqId}}})
+    .catch((err) => console.log(err));
+  Group.updateOne({ _id: req.body.groupId }, {$pull: {joinRequests: {id: req.body.reqId}}})
+    .catch((err) => console.log(err));
+  User.updateOne({username: req.body.reqId}, {$push: {groups: {groupId: req.body.groupId, groupName: req.body.groupName}}})
+    .catch((err) => console.log(err));
+  res.redirect(`/group?id=${req.body.groupId}`);
+});
+
+app.post("/decline-join", function(req, res) {
+  Group.updateOne({ _id: req.body.groupId }, {$pull: {joinRequests: {id: req.body.reqId}}})
+    .catch((err) => console.log(err));
+  res.redirect(`/group?id=${req.body.groupId}`);
+})
