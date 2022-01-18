@@ -84,6 +84,7 @@
                             <p>
                                 <%=element.className%>
                             </p>
+                            <p class="hidden name"><%=member.name%></p>
                             <p class="hidden username">
                                 <%=member.username%>
                             </p>
@@ -121,6 +122,7 @@
         <div class="hover edit-class hidden">
             <p>x</p>
             <h2></h2>
+            <p class="name"></p>
             <p class="days"></p>
             <p class="time"></p>
             <p class="room"></p>
@@ -166,8 +168,8 @@
                     const editPanel = document.querySelector('.hover.edit-class');
                     editPanel.classList.remove('hidden');
                     document.querySelector('.fullscreen').classList.remove('hidden');
-                    console.log(element);
                     editPanel.querySelector('h2').innerHTML = element.querySelector('p').innerHTML;
+                    editPanel.querySelector('.name').innerHTML = "Student: " + element.querySelector('.name').innerHTML;
                     editPanel.querySelector('.time').innerHTML = `Time: ${element.querySelector('.startTime').innerHTML} - ${element.querySelector('.endTime').innerHTML}`
                     editPanel.querySelector('.days').innerHTML = "Days: " + element.querySelector('.days').innerHTML.replace(new RegExp(',', 'g'), ', ');
 
