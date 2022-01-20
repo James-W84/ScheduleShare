@@ -11,12 +11,13 @@
             <h1>
                 <%=user.name%>'s Schedule
             </h1>
-            <p>User ID: <%=user.username%></p>
+            <p>User ID: <%=user.username%>
+            </p>
             <%if (viewOnly) {%>
-            <button class="add-course-btn hidden">+</button>
-            <%} else {%>
-            <button class="add-course-btn ">+</button>
-            <%}%>
+                <button class="add-course-btn hidden">+</button>
+                <%} else {%>
+                    <button class="add-course-btn ">+</button>
+                    <%}%>
         </div>
         <div class="schedule schedule-setwidth">
             <table class="schedule schedule-setwidth">
@@ -98,8 +99,8 @@
                             <%=element.prof%>
                         </p>
                     </div>
-                <%})%>
-            <%});%>
+                    <%})%>
+                        <%});%>
         </div>
         <div class="hover add-class hidden">
             <h2>Add New Class</h2>
@@ -141,9 +142,9 @@
                     <input type="checkbox" name="saturday" class="checkboxday">
                 </div><br>
                 <label>Room: </label>
-                <input type="text" name="room" placeholder="(optional)"><br>
+                <input type="text" name="room" placeholder="(optional)" maxlength="30"><br>
                 <label>Instructor: </label>
-                <input type="text" name="prof" placeholder="(optional)"><br>
+                <input type="text" name="prof" placeholder="(optional)" maxlength="30"><br>
                 <button type="submit">Add</button>
             </form>
         </div>
@@ -151,22 +152,22 @@
             <p>x</p>
             <%if (viewOnly) {%>
                 <i class="fas fa-edit hidden"></i>
-            <%}else{%>
-                <i class="fas fa-edit"></i>
-            <%}%> 
-            <h2></h2>
-            <p class="days"></p>
-            <p class="time"></p>
-            <p class="room"></p>
-            <p class="prof"></p>
-            <p class="hidden start-time"></p>
-            <p class="hidden end-time"></p>
-            <%if (!viewOnly) {%>
-                <form method="post" action="/delete">
-                    <input type="text" class="hidden" name="className" id="className">
-                    <button type="submit" class="delete">Delete Class</button>
-                </form>
-            <%}%>
+                <%}else{%>
+                    <i class="fas fa-edit"></i>
+                    <%}%>
+                        <h2></h2>
+                        <p class="days"></p>
+                        <p class="time"></p>
+                        <p class="room"></p>
+                        <p class="prof"></p>
+                        <p class="hidden start-time"></p>
+                        <p class="hidden end-time"></p>
+                        <%if (!viewOnly) {%>
+                            <form method="post" action="/delete">
+                                <input type="text" class="hidden" name="className" id="className">
+                                <button type="submit" class="delete">Delete Class</button>
+                            </form>
+                            <%}%>
         </div>
         <div class="hover editor hidden">
             <h2>Edit Class</h2>
@@ -182,7 +183,7 @@
                 <br>
                 <div class="edit-day">
                     <label>Sun</label><br>
-                    <input type="checkbox" name="sunday" class="editday" >
+                    <input type="checkbox" name="sunday" class="editday">
                 </div>
                 <div class="edit-day">
                     <label>Mon</label><br>
@@ -202,20 +203,20 @@
                 </div>
                 <div class="edit-day">
                     <label>Fri</label><br>
-                    <input type="checkbox" name="friday" class="editday"   >
+                    <input type="checkbox" name="friday" class="editday">
                 </div>
                 <div class="edit-day">
                     <label>Sat</label><br>
-                    <input type="checkbox" name="saturday" class="editday"   >
+                    <input type="checkbox" name="saturday" class="editday">
                 </div><br>
                 <label>Room: </label>
-                <input type="text" name="room" id="room" placeholder="(none)"><br>
+                <input type="text" name="room" id="room" placeholder="(none)" maxlength="30"><br>
                 <label>Instructor: </label>
-                <input type="text" name="prof" id="prof" placeholder="(none)"><br>
+                <input type="text" name="prof" id="prof" placeholder="(none)" maxlength="30"><br>
                 <button type="submit">Edit</button>
             </form>
         </div>
-        
+
         <div class="fullscreen hidden"></div>
 
         <script>
