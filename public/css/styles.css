@@ -168,7 +168,7 @@ button {
     align-items: center;
     background-image: linear-gradient(to right, #6998AB, #B1D0E0);
     background-repeat:repeat-y;
-    background-size: 140vw;
+    background-size: 600vw;
     height: 120vh;
     overflow: hidden;
     overflow: scroll;

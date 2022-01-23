@@ -153,16 +153,16 @@
                     <p>ID: <%=element.id%>
                     </p>
                     <form action="/accept-join" method="post">
-                        <input type="text" class="hidden" name="name" value=<%=element.name%>>
+                        <input type="text" class="hidden" name="name" value="<%=element.name%>">
                         <input type="text" class="hidden" name="reqId" value=<%=element.id%>>
-                        <input type="text" class="hidden" name="groupName" value=<%=group.name%>>
+                        <input type="text" class="hidden" name="groupName" value="<%=group.name%>">
                         <input type="text" class="hidden" name="groupId" value=<%=group._id%>>
                         <button type="submit" id="accept-btn">Accept</button>
                     </form>
                     <form action="/decline-join" method="post">
-                        <input type="text" class="hidden" name="name" value=<%=element.name%>>
+                        <input type="text" class="hidden" name="name" value="<%=element.name%>">
                         <input type="text" class="hidden" name="reqId" value=<%=element.id%>>
-                        <input type="text" class="hidden" name="groupName" value=<%=group.name%>>
+                        <input type="text" class="hidden" name="groupName" value="<%=group.name%>">
                         <input type="text" class="hidden" name="groupId" value=<%=group._id%>>
                         <button type="submit" id="decline-btn">Decline</button>
                     </form>
