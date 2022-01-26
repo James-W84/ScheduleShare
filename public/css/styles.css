@@ -39,7 +39,7 @@ a:hover {
 @media (max-width: 1006px) {
     h1 {font-size: 2.5rem;}
     .flex-4 {display: block; width: 100%;}
-    .flex-6 {display: block; width: 100%;}
+    .flex-6 {display: block; width: 100%}
 }
 
 /* Landing Page */
@@ -170,6 +170,7 @@ button {
     background-repeat:repeat-y;
     background-size: 600vw;
     height: 120vh;
+    min-width: fit-content;
     overflow: hidden;
     overflow: scroll;
 }
@@ -215,8 +216,9 @@ button {
     border-bottom-right-radius: 10px;
     border-top-right-radius: 10px;
     left: 0;
+    min-width: 300px;
     top: 0;
-    width: 500px;
+    width: 40vw;
 }
 
 .schedule-header {
@@ -299,7 +301,7 @@ thead th {
     margin-left: -150px;
     padding: 1%;
     position: fixed;
-    top: 20%;
+    top: 15%;
     width: 300px;
     z-index: 2;
 }
@@ -414,6 +416,7 @@ thead th {
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
     margin: 0 auto;
+    min-width: 300px;
     padding: 1%;
     width: 60%;
 }
@@ -422,8 +425,9 @@ thead th {
     background-color: white;
     border-bottom-left-radius: 16px;
     border-bottom-right-radius: 16px;
-    line-height: 0.7rem;
+    line-height: 1rem;
     margin: 0 auto;
+    min-width: 300px;
     text-align: left;
     width: 62%;
 }
@@ -449,7 +453,8 @@ thead th {
 .friend-form, .friend-requests, .group-form, .new-group {
     border-radius: 16px;
     margin-bottom: 6%;
-    width: 60%;
+    min-width: 250px;
+    width: 60%
 }
 
 .friend-form, .group-form {

@@ -117,7 +117,7 @@
                                                     style="background-color:transparent; border-color:rgb(<%=colors[index]%>);">
                                                 </div>
                                                 <p>
-                                                    <%=element.name%>
+                                                    <%=element.name + (index===0 ? " (Admin)" : "" )%>
                                                 </p>
                                                 <p class="hidden">
                                                     <%=element.username%>
